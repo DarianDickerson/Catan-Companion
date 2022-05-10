@@ -1,0 +1,317 @@
+/* Box Model Hack */
+* {
+  box-sizing: border-box;
+}
+
+/* Clear fix hack */
+.clearfix:after {
+     content: ".";
+     display: block;
+     clear: both;
+     visibility: hidden;
+     line-height: 0;
+     height: 0;
+}
+
+.clear {
+	clear: both;
+}
+
+/******************************************
+/* BASE STYLES
+/*******************************************/
+
+body {
+  text-align: center;
+}
+
+header{
+  padding: 3%;
+}
+
+h1{
+  padding: 0;
+  margin: 0;
+}
+
+section{
+  padding: 5%;
+}
+
+
+
+/******************************************
+/* LAYOUT
+/*******************************************/
+h1, h2, h3{
+  color: white;
+  text-shadow: 0.07em 0 black, 0 0.07em black, 0.07em 0 black, 0 -0.07em black;
+  /*font-family: 'Parisienne', cursive;*/
+  font-family: 'Playfair Display', serif;
+  font-size: 50px;
+}
+
+h3{
+  font-size: 25px;
+}
+
+/*Player Select Section*/
+.orderContainer{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.orderContainer div{
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around;
+  align-items: center;
+}
+
+.orderContainer button{
+  width: 30px;
+  height: 30px;
+}
+
+.playerBlue{
+  display: none;
+}
+.playerGreen{
+  display: none;
+}
+.playerRed{
+  display: none;
+}
+.playerOrange{
+  display: none;
+}
+.playerWhite{
+  display: none;
+}
+.playerBrown{
+  display: none;
+}
+
+/*Board Section*/
+/*
+#board{
+  display: none;
+}
+
+#board div{
+  display: flex;
+  justify-content: space-around;
+
+}
+
+#board div div {
+  width: 100px;
+  height: 57.735px;
+  background: red;
+  position: relative;
+  margin: 20px;
+}
+#board div div::before {
+  content: "";
+  position: absolute;
+  top: -28.8675px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 28.8675px solid red;
+}
+#board div div::after {
+  content: "";
+  position: absolute;
+  bottom: -28.8675px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 28.8675px solid red;
+}
+*/
+
+/*Card Track Section*/
+#card{
+  background: url(../images/pieceBack.jpg);
+  background-repeat: none;
+  background-size: cover; 
+}
+
+.cardContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#card > button{
+  width: 100px;
+}
+
+.cardContainer div{
+  border-radius: 15px;
+  margin: 20px 0;
+}
+
+.trackBlue, .orderContBlue{
+  border: solid 10px #08214a;
+  background:radial-gradient(lightskyblue, #5b7cb0,#183d8c);
+}
+.trackGreen, .orderContGreen{
+  border: solid 10px #022e01;
+  background: radial-gradient(lightgreen, #418f3f, #095705);
+}
+.trackRed, .orderContRed{
+  border: solid 10px #4d0206;
+  background:radial-gradient(#f28d91,#f55860,#70080d); 
+}
+.trackBrown, .orderContBrown{
+  border: solid 10px #26130a;
+  background:radial-gradient(tan,#947769,#3b190c)
+}
+.trackWhite, .orderContWhite{
+  border: solid 10px gray;
+  background: radial-gradient(white,#edebeb, #b8b9ba)
+}
+.trackOrange, .orderContOrange{
+  border: solid 10px #751c01;
+  background: radial-gradient(#fa9070,#fa693e,#8c2c08);
+}
+
+ul{
+  list-style: none;
+  padding: 15px;
+  margin: 0;
+}
+
+li img{
+  height: 35px;
+}
+
+li button{
+  width: 30px;
+}
+
+/*Card Reveal Section*/
+#reveal{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: url(../images/woodBack.jpg);
+  color: white;
+}
+
+table{
+  width: 100%;
+  font-size: 30px;
+  text-shadow: 0.07em 0 black, 0 0.07em black, 0.07em 0 black, 0 -0.07em black;
+}
+
+td, th{
+  padding: 5px;
+}
+
+tr{
+  background: rgba(0,0,0,.5)
+}
+
+.trBlue{
+  background: rgba(102,102,255,.5);
+}
+.trGreen{
+  background: rgba(104,255,109,.5);
+}
+.trRed{
+  background: rgba(255,102,102,.5);
+}
+.trOrange{
+  background: rgba(255,178,102,.5);
+}
+.trWhite{
+  background: rgba(255,255,255,.5);
+}
+.trBrown{
+  background: rgba(213,175,126,.5);
+}
+
+#clearGame{
+  margin: 30px;
+}
+
+/*Dice Section*/
+#dice, header{
+  background: url(../images/woodBack.jpg);
+  background-repeat: none;
+  background-size: cover;
+}
+
+.diceContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin: 15px;
+}
+
+.diceContainer div div{
+  display: flex;
+  flex-direction: column-reverse;
+  background: linear-gradient(to top, black, #1c1c1c,#333332);
+  height: 200px;
+}
+
+.diceContainer div div div{
+  border: solid 1px black;
+  border-radius: 15px 15px 0 0;
+  background: linear-gradient(to top, #3d185e, #163c75,#62fcfc);
+  height: 0px;
+}
+
+button{
+  width: 55px;
+  border-radius: 7px;
+}
+
+img{
+  width: 50px;
+  height: 40px;
+  padding: 0 5px;
+}
+
+.diceContainer span{
+  color: white;
+}
+
+/*footer nav*/
+footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(to top, black, #1c1c1c,#333332);
+}
+
+nav{
+  display: flex;
+  justify-content: space-around;
+  margin: 5px 30%;
+}
+
+a{
+  color: white;
+  text-shadow: 0.07em 0 black, 0 0.07em black, 0.07em 0 black, 0 -0.07em black;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/******************************************
+/* ADDITIONAL STYLES
+/*******************************************/

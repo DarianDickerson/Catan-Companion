@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+  		<meta charset="utf-8">
+  		<meta name="description" content="Your description goes here">
+  		<meta name="keywords" content="one, two, three">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<title>Settlers of Catan Companion Tracker</title>
+
+		<!--PLayfair Display Font-->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+
+		<!-- external CSS link -->
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<header>
+			<h1>Settlers of Catan Companion Tracker</h1>
+		</header>
+
+		<!--Player Select-->
+		<section id="player">
+			<h2>Player Select</h2>
+			<div class="orderContainer">
+				<div class="orderContBlue">
+					<img src="images/cube.png" alt="Blue Piece">
+					<button id="orderBlue"></button>
+				</div>
+				<div class="orderContGreen">
+					<img src="images/cube.png" alt="Green Piece">
+					<button id="orderGreen"></button>
+				</div>
+				<div class="orderContRed">
+					<img src="images/cube.png" alt="Red Piece">
+					<button id="orderRed"></button>
+				</div>
+				<div class="orderContOrange">
+					<img src="images/cube.png" alt="Orange Piece">
+					<button id="orderOrange"></button>
+				</div>
+				<div class="orderContWhite">
+					<img src="images/cube.png" alt="White Piece">
+					<button id="orderWhite"></button>
+				</div>
+				<div class="orderContBrown">
+					<img src="images/cube.png" alt="Brown Piece">
+					<button id="orderBrown"></button>
+				</div>
+			</div>
+			<button id="playerClear">Clear</button>
+		</section>
+		
+		<!--Card Sorter-->
+		<section id="card">
+			<h2>Card Tracker</h2>
+			<button id="submit">Submit Cards</button>
+			<button id="clearValues">Clear </br> Values</button>
+			<div class="cardContainer">
+				<div class="trackBlue playerBlue">
+					<ul>
+						<li>
+							<img src="images/wood.jpg" alt="wood">
+							<button id="minusBlueWood">-</button>
+							<span id="spanBlueWood">0</span>
+							<button id="plusBlueWood">+</button>
+						</li>
+						<li>
+							<img src="images/brick.png" alt="brick">
+							<button id="minusBlueBrick">-</button>
+							<span id="spanBlueBrick">0</span>
+							<button id="plusBlueBrick">+</button>
+						</li>
+						<li>
+							<img src="images/wool.png" alt="wool">
+							<button id="minusBlueWool">-</button>
+							<span id="spanBlueWool">0</span>
+							<button id="plusBlueWool">+</button>
+						</li>
+						<li>
+							<img src="images/wheat.png" alt="wheat">
+							<button id="minusBlueWheat">-</button>
+							<span id="spanBlueWheat">0</span>
+							<button id="plusBlueWheat">+</button>
+						</li>
+						<li>
+							<img src="images/ore.png" alt="ore">
+							<button id="minusBlueOre">-</button>
+							<span id="spanBlueOre">0</span>
+							<button id="plusBlueOre">+</button>
+						</li>
+					</ul>
+				</div>
+				<div class="trackGreen playerGreen">
+					<ul>
+						<li>
+							<img src="images/wood.jpg" alt="wood">
+							<button id="minusGreenWood">-</button>
+							<span id="spanGreenWood">0</span>
+							<button id="plusGreenWood">+</button>
+						</li>
+						<li>
+							<img src="images/brick.png" alt="brick">
+							<button id="minusGreenBrick">-</button>
+							<span id="spanGreenBrick">0</span>
+							<button id="plusGreenBrick">+</button>
+						</li>
+						<li>
+							<img src="images/wool.png" alt="wool">
+							<button id="minusGreenWool">-</button>
+							<span id="spanGreenWool">0</span>
+							<button id="plusGreenWool">+</button>
+						</li>
+						<li>
+							<img src="images/wheat.png" alt="wheat">
+							<button id="minusGreenWheat">-</button>
+							<span id="spanGreenWheat">0</span>
+							<button id="plusGreenWheat">+</button>
+						</li>
+						<li>
+							<img src="images/ore.png" alt="ore">
+							<button id="minusGreenOre">-</button>
+							<span id="spanGreenOre">0</span>
+							<button id="plusGreenOre">+</button>
+						</li>
+					</ul>
+				</div>
+				<div class="trackRed playerRed">
+					<ul>
+						<li>
+							<img src="images/wood.jpg" alt="wood">
+							<button id="minusRedWood">-</button>
+							<span id="spanRedWood">0</span>
+							<button id="plusRedWood">+</button>
+						</li>
+						<li>
+							<img src="images/brick.png" alt="brick">
+							<button id="minusRedBrick">-</button>
+							<span id="spanRedBrick">0</span>
+							<button id="plusRedBrick">+</button>
+						</li>
+						<li>
+							<img src="images/wool.png" alt="wool">
+							<button id="minusRedWool">-</button>
+							<span id="spanRedWool">0</span>
+							<button id="plusRedWool">+</button>
+						</li>
+						<li>
+							<img src="images/wheat.png" alt="wheat">
+							<button id="minusRedWheat">-</button>
+							<span id="spanRedWheat">0</span>
+							<button id="plusRedWheat">+</button>
+						</li>
+						<li>
+							<img src="images/ore.png" alt="ore">
+							<button id="minusRedOre">-</button>
+							<span id="spanRedOre">0</span>
+							<button id="plusRedOre">+</button>
+						</li>
+					</ul>
+				</div>
+				<div class="trackOrange playerOrange">
+					<ul>
+						<li>
+							<img src="images/wood.jpg" alt="wood">
+							<button id="minusOrangeWood">-</button>
+							<span id="spanOrangeWood">0</span>
+							<button id="plusOrangeWood">+</button>
+						</li>
+						<li>
+							<img src="images/brick.png" alt="brick">
+							<button id="minusOrangeBrick">-</button>
+							<span id="spanOrangeBrick">0</span>
+							<button id="plusOrangeBrick">+</button>
+						</li>
+						<li>
+							<img src="images/wool.png" alt="wool">
+							<button id="minusOrangeWool">-</button>
+							<span id="spanOrangeWool">0</span>
+							<button id="plusOrangeWool">+</button>
+						</li>
+						<li>
+							<img src="images/wheat.png" alt="wheat">
+							<button id="minusOrangeWheat">-</button>
+							<span id="spanOrangeWheat">0</span>
+							<button id="plusOrangeWheat">+</button>
+						</li>
+						<li>
+							<img src="images/ore.png" alt="ore">
+							<button id="minusOrangeOre">-</button>
+							<span id="spanOrangeOre">0</span>
+							<button id="plusOrangeOre">+</button>
+						</li>
+					</ul>
+				</div>
+				<div class="trackWhite playerWhite">
+					<ul>
+						<li>
+							<img src="images/wood.jpg" alt="wood">
+							<button id="minusWhiteWood">-</button>
+							<span id="spanWhiteWood">0</span>
+							<button id="plusWhiteWood">+</button>
+						</li>
+						<li>
+							<img src="images/brick.png" alt="brick">
+							<button id="minusWhiteBrick">-</button>
+							<span id="spanWhiteBrick">0</span>
+							<button id="plusWhiteBrick">+</button>
+						</li>
+						<li>
+							<img src="images/wool.png" alt="wool">
+							<button id="minusWhiteWool">-</button>
+							<span id="spanWhiteWool">0</span>
+							<button id="plusWhiteWool">+</button>
+						</li>
+						<li>
+							<img src="images/wheat.png" alt="wheat">
+							<button id="minusWhiteWheat">-</button>
+							<span id="spanWhiteWheat">0</span>
+							<button id="plusWhiteWheat">+</button>
+						</li>
+						<li>
+							<img src="images/ore.png" alt="ore">
+							<button id="minusWhiteOre">-</button>
+							<span id="spanWhiteOre">0</span>
+							<button id="plusWhiteOre">+</button>
+						</li>
+					</ul>
+				</div>
+				<div class="trackBrown playerBrown">
+					<ul>
+						<li>
+							<img src="images/wood.jpg" alt="wood">
+							<button id="minusBrownWood">-</button>
+							<span id="spanBrownWood">0</span>
+							<button id="plusBrownWood">+</button>
+						</li>
+						<li>
+							<img src="images/brick.png" alt="brick">
+							<button id="minusBrownBrick">-</button>
+							<span id="spanBrownBrick">0</span>
+							<button id="plusBrownBrick">+</button>
+						</li>
+						<li>
+							<img src="images/wool.png" alt="wool">
+							<button id="minusBrownWool">-</button>
+							<span id="spanBrownWool">0</span>
+							<button id="plusBrownWool">+</button>
+						</li>
+						<li>
+							<img src="images/wheat.png" alt="wheat">
+							<button id="minusBrownWheat">-</button>
+							<span id="spanBrownWheat">0</span>
+							<button id="plusBrownWheat">+</button>
+						</li>
+						<li>
+							<img src="images/ore.png" alt="ore">
+							<button id="minusBrownOre">-</button>
+							<span id="spanBrownOre">0</span>
+							<button id="plusBrownOre">+</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<button id="showStats">Show Stats</button>
+		</section>
+
+		<!--Card Reveal-->
+		<section id="reveal">
+			<h2>Stats</h2>
+			<table>
+				<tr>
+					<th></th>
+					<th><img src="images/wood.jpg" alt="Wood"></th>
+					<th><img src="images/brick.png" alt="Brick"></th>
+					<th><img src="images/wool.png" alt="Wool"></th>
+					<th><img src="images/wheat.png" alt="Wheat"></th>
+					<th><img src="images/ore.png" alt="Ore"></th>
+					<th>Total </br>Cards</th>
+				</tr>
+				<tr class="trBlue playerBlue">
+					<th>Blue</th>
+					<td id="countBlueWood">0</td>
+					<td id="countBlueBrick">0</td>
+					<td id="countBlueWool">0</td>
+					<td id="countBlueWheat">0</td>
+					<td id="countBlueOre">0</td>
+					<td id="countBlueTotal">0</td>
+				</tr>
+				<tr class="trGreen playerGreen">
+					<th>Green</th>
+					<td id="countGreenWood">0</td>
+					<td id="countGreenBrick">0</td>
+					<td id="countGreenWool">0</td>
+					<td id="countGreenWheat">0</td>
+					<td id="countGreenOre">0</td>
+					<td id="countGreenTotal">0</td>
+				</tr>
+				<tr class="trRed playerRed">
+					<th>Red</th>
+					<td id="countRedWood">0</td>
+					<td id="countRedBrick">0</td>
+					<td id="countRedWool">0</td>
+					<td id="countRedWheat">0</td>
+					<td id="countRedOre">0</td>
+					<td id="countRedTotal">0</td>
+				</tr>
+				<tr class="trOrange playerOrange">
+					<th>Orange</th>
+					<td id="countOrangeWood">0</td>
+					<td id="countOrangeBrick">0</td>
+					<td id="countOrangeWool">0</td>
+					<td id="countOrangeWheat">0</td>
+					<td id="countOrangeOre">0</td>
+					<td id="countOrangeTotal">0</td>
+				</tr>
+				<tr class="trWhite playerWhite">
+					<th>White</th>
+					<td id="countWhiteWood">0</td>
+					<td id="countWhiteBrick">0</td>
+					<td id="countWhiteWool">0</td>
+					<td id="countWhiteWheat">0</td>
+					<td id="countWhiteOre">0</td>
+					<td id="countWhiteTotal">0</td>
+				</tr>
+				<tr class="trBrown playerBrown">
+					<th>Brown</th>
+					<td id="countBrownWood">0</td>
+					<td id="countBrownBrick">0</td>
+					<td id="countBrownWool">0</td>
+					<td id="countBrownWheat">0</td>
+					<td id="countBrownOre">0</td>
+					<td id="countBrownTotal">0</td>
+				</tr>	
+			</table>
+			<button id="clearGame">Clear Game</button>
+		</section>
+		
+
+		<!--Dice Tracker-->
+		<section id="dice">
+			<h2>Dice Rolls</h2>
+			<!--Holds dice-->
+			<div class="diceContainer">
+				<button id="roll">Roll</button>
+				<img id="dice1" src="" alt="">
+				<img id="dice2" src="" alt="">
+				<button id="clearDice">Clear</button>
+			</div>
+			<!--Holds numbers-->
+			<div class="diceContainer">
+				<div>
+					<button id="but2">2</button>
+					<div><div id="bar2"></div></div>
+					<span id="span2">0</span>
+				</div>
+				<div>
+					<button id="but3">3</button>
+					<div><div id="bar3"></div></div>
+					<span id="span3">0</span>
+				</div>
+				<div>
+					<button id="but4">4</button>
+					<div><div id="bar4"></div></div>
+					<span id="span4">0</span>
+				</div>
+				<div>
+					<button id="but5">5</button>
+					<div><div id="bar5"></div></div>
+					<span id="span5">0</span>
+				</div>
+				<div>
+					<button id="but6">6</button>
+					<div><div id="bar6"></div></div>
+					<span id="span6">0</span>
+				</div>
+				<div>
+					<button id="but7">7</button>
+					<div><div id="bar7"></div></div>
+					<span id="span7">0</span>
+				</div>
+				<div>
+					<button id="but8">8</button>
+					<div><div id="bar8"></div></div>
+					<span id="span8">0</span>
+				</div>
+				<div>
+					<button id="but9">9</button>
+					<div><div id="bar9"></div></div>
+					<span id="span9">0</span>
+				</div>
+				<div>
+					<button id="but10">10</button>
+					<div><div id="bar10"></div></div>
+					<span id="span10">0</span>
+				</div>
+				<div>
+					<button id="but11">11</button>
+					<div><div id="bar11"></div></div>
+					<span id="span11">0</span>
+				</div>
+				<div>
+					<button id="but12">12</button>
+					<div><div id="bar12"></div></div>
+					<span id="span12">0</span>
+				</div>
+			</div>
+			<h3 id="totalRolls">Total Rolls: 0</h3>
+		</section>
+
+		<!--Footer Nav-->
+		<footer>
+			<nav>
+				<a href="#player">Player Select</a>
+				<a href="#card">Card Tracker</a>
+				<!--a id="headStats" href="#reveal" >Stats</a-->
+				<a href="#dice">Dice Rolls</a>
+			</nav>
+		</footer>
+
+		<script type="text/javascript" src="js/main.js"></script>
+	</body>
+</html>
