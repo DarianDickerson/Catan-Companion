@@ -94,51 +94,81 @@ h3{
 }
 
 /*Board Section*/
-/*
 #board{
-  display: none;
+  background: url(../images/ocean.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+#board h2{
+  margin-bottom: 75px;
 }
 
 #board div{
   display: flex;
-  justify-content: space-around;
-
+  justify-content: center;
 }
 
-#board div div {
-  width: 100px;
-  height: 57.735px;
-  background: red;
+#board div div{
+  background: url(../images/pieceOre.jpg);
+  background-position: center;
+  clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+  height: 150px;
+  width: 150px;
+}
+
+#board section{
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.rowHex2{
   position: relative;
-  margin: 20px;
+  bottom: 77.5px;
 }
-#board div div::before {
-  content: "";
-  position: absolute;
-  top: -28.8675px;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-  border-bottom: 28.8675px solid red;
+
+.rowHex3{
+  position: relative;
+  bottom: 155px;
 }
-#board div div::after {
-  content: "";
-  position: absolute;
-  bottom: -28.8675px;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-  border-top: 28.8675px solid red;
+
+.rowBut4{
+  position: relative;
+  bottom: 77.5px;
 }
-*/
+
+button.shiftUp, button.shiftDown{
+  border-radius: 50%;
+  margin: 0 17.5px;
+  width: 40px;
+  height: 40px;
+  z-index: 3;
+  background: none;
+  border: solid 1px black;
+}
+
+.shiftUp{
+  position: relative;
+  bottom: 52.5px;
+}
+
+.shiftDown{
+  position: relative;
+  bottom: 20px;
+}
+
+#board .bigBoard{
+  
+}
+
 
 /*Card Track Section*/
 #card{
   background: url(../images/pieceBack.jpg);
+  background-position: center;
   background-repeat: none;
   background-size: cover; 
 }
@@ -246,6 +276,17 @@ tr{
   margin: 30px;
 }
 
+/*Assign Resources*/
+#assign div{
+  display: flex;
+  justify-content: center;
+}
+
+#assign div div{
+  display: flex;
+  flex-direction: column;
+}
+
 /*Dice Section*/
 #dice, header{
   background: url(../images/woodBack.jpg);
@@ -296,12 +337,13 @@ footer{
   bottom: 0;
   width: 100%;
   background: linear-gradient(to top, black, #1c1c1c,#333332);
+  z-index: 5;
 }
 
 nav{
   display: flex;
   justify-content: space-around;
-  margin: 5px 30%;
+  margin: 5px 10%;
 }
 
 a{
