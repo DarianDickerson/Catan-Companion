@@ -99,10 +99,11 @@ h3{
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  height: 1200px;
 }
 
 #board h2{
-  margin-bottom: 75px;
+  margin-top: 0;
 }
 
 #board div{
@@ -111,11 +112,20 @@ h3{
 }
 
 #board div div{
-  background: url(../images/pieceOre.jpg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url(../images/pieceDesert.png);
   background-position: center;
   clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
   height: 150px;
   width: 150px;
+}
+
+#board div div button{
+  height:40px;
+  width: 40px;
+  border-radius: 50%;
 }
 
 #board section{
@@ -123,6 +133,11 @@ h3{
   margin: 0;
   display: flex;
   justify-content: center;
+}
+
+.rowHex0{
+  position: relative;
+  top: 77.5px;
 }
 
 .rowHex2{
@@ -135,9 +150,23 @@ h3{
   bottom: 155px;
 }
 
-.rowBut4{
+.rowHex4{
   position: relative;
-  bottom: 77.5px;
+  bottom: 232.5px;
+}
+
+.rowHex5{
+  position: relative;
+  bottom: 310px;
+}
+
+.rowHex6{
+  position: relative;
+  bottom: 387.5px;
+}
+.rowHex7{
+  position: relative;
+  bottom: 465px;
 }
 
 button.shiftUp, button.shiftDown{
