@@ -1,8 +1,8 @@
 //Board Class
 class Board{
     constructor(){
-        this.order = []
-        this.turn = 1
+        this._order = []
+        this._turn = 0
     }
     //Creates and Sets the order of players & makes their pieces visible
     createPlayerOrder(color){
@@ -11,14 +11,12 @@ class Board{
             //Makes all elements specific to color visible
             document.querySelectorAll(`.player${color}`).forEach(n=> n.style.display = "table-row")
 
-            //Add Color to player Order
-            this.order.push(color)
-
-            //Create Player for that color
-            new Player(color, order.length-1)
+            //Create Player for that color and put it in turn order
+            this._order.push(new Player(color,this._order.length))
+            console.log(this._order)
 
             //Assigns color to the next turn order
-            document.querySelector(`#order${color}`).innerText = order.length  
+            document.querySelector(`#order${color}`).innerText = this._order.length  
         }
 }
 
@@ -27,9 +25,10 @@ class Board{
 
 //Player Class extends Board 
 class Player extends Board{
-    constructor(color, order){
+    constructor(color, orderPlayer){
+        super()
         this._color = color
-        this._order = order
+        this._orderPlayer = orderPlayer
         
         //Resources Collected
         //0:Wood, 1:Brick, 2:Wool, 3:Wheat, 4:Ore
@@ -43,6 +42,7 @@ class Player extends Board{
 //Dice Class extends Board
 class Dice extends Board{
     constructor(){
+        super()
         //Dice Values, Starts randomly from 1-6
         this._dice1 = Math.floor(Math.random() * 6) + 1
         this._dice2 = Math.floor(Math.random() * 6) + 1
@@ -130,15 +130,16 @@ class Dice extends Board{
     }
 }
 
+let game = new Board() 
 let diceTrack = new Dice()
 
 //Event Listeners for Player Select
-document.querySelector("#orderBlue").addEventListener("click",() => orderPlayers("Blue"))
-document.querySelector("#orderGreen").addEventListener("click",() => orderPlayers("Green"))
-document.querySelector("#orderRed").addEventListener("click",() => orderPlayers("Red"))
-document.querySelector("#orderOrange").addEventListener("click",() => orderPlayers("Orange"))
-document.querySelector("#orderWhite").addEventListener("click",() => orderPlayers("White"))
-document.querySelector("#orderBrown").addEventListener("click",() => orderPlayers("Brown"))
+document.querySelector("#orderBlue").addEventListener("click",() => game.createPlayerOrder("Blue"))
+document.querySelector("#orderGreen").addEventListener("click",() => game.createPlayerOrder("Green"))
+document.querySelector("#orderRed").addEventListener("click",() => game.createPlayerOrder("Red"))
+document.querySelector("#orderOrange").addEventListener("click",() => game.createPlayerOrder("Orange"))
+document.querySelector("#orderWhite").addEventListener("click",() => game.createPlayerOrder("White"))
+document.querySelector("#orderBrown").addEventListener("click",() => game.createPlayerOrder("Brown"))
 
 //Event Listeners to increase count for dice rolls
 document.querySelector("#but2").addEventListener("click", () => diceTrack.numsButtons(0))
