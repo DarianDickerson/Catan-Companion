@@ -1,5 +1,32 @@
-//Player Object extends Game
-class Player{
+//Board Class
+class Board{
+    constructor(){
+        this.order = []
+        this.turn = 1
+    }
+    //Creates and Sets the order of players & makes their pieces visible
+    createPlayerOrder(color){
+        //Check if the tile is empty
+        if(document.querySelector(`#order${color}`).childNodes.length == 0){
+            //Makes all elements specific to color visible
+            document.querySelectorAll(`.player${color}`).forEach(n=> n.style.display = "table-row")
+
+            //Add Color to player Order
+            this.order.push(color)
+
+            //Create Player for that color
+            new Player(color, order.length-1)
+
+            //Assigns color to the next turn order
+            document.querySelector(`#order${color}`).innerText = order.length  
+        }
+}
+
+
+}
+
+//Player Class extends Board 
+class Player extends Board{
     constructor(color, order){
         this._color = color
         this._order = order
@@ -10,10 +37,11 @@ class Player{
         //2,3,4,5,6,7,8,9,10,11,12
         this._playerRolls = [0,0,0,0,0,0,0,0,0,0,0]
     }
+
 }
 
-//Dice Object extends Game
-class Dice{
+//Dice Class extends Board
+class Dice extends Board{
     constructor(){
         //Dice Values, Starts randomly from 1-6
         this._dice1 = Math.floor(Math.random() * 6) + 1
@@ -41,7 +69,7 @@ class Dice{
             document.querySelector(`#dice${i}`).src = `images/${eval(`this._dice${i}`)}.png`
             document.querySelector(`#dice${i}`).alt = eval(`this._dice${i}`)
         }
-        
+
         //Increase Dice Roll count
         this.numsButtons(this._dice1 + this._dice2 - 2)
     } 
@@ -50,7 +78,7 @@ class Dice{
     numsButtons(index){
         //Increase specific number total count
         this._totalRolls[index] += 1
-        document.querySelector(`#span${index+2}`).innerText = `${this._totalRolls[index]}`
+        document.querySelector(`#span${index+2}`).innerText = this._totalRolls[index]
         this.updateGraph()
 
         /*TODO:
@@ -67,8 +95,8 @@ class Dice{
     //Updates the Dice Roll Graph for all numbers
     updateGraph(){
         let max = Math.max(...this._totalRolls)
-        let rolls = this._totalRolls.reduce((a,c)=>a+c,0)
-        this._totalRolls.forEach(function(n,i){
+        let rolls = this._totalRolls.reduce((a,c)=>a+c,0);
+        this._totalRolls.forEach((n,i) => {
             if(max === 0){
                 //Graph is empty
                 document.querySelector(`#bar${i+2}`).style.height = "0px"
@@ -104,6 +132,14 @@ class Dice{
 
 let diceTrack = new Dice()
 
+//Event Listeners for Player Select
+document.querySelector("#orderBlue").addEventListener("click",() => orderPlayers("Blue"))
+document.querySelector("#orderGreen").addEventListener("click",() => orderPlayers("Green"))
+document.querySelector("#orderRed").addEventListener("click",() => orderPlayers("Red"))
+document.querySelector("#orderOrange").addEventListener("click",() => orderPlayers("Orange"))
+document.querySelector("#orderWhite").addEventListener("click",() => orderPlayers("White"))
+document.querySelector("#orderBrown").addEventListener("click",() => orderPlayers("Brown"))
+
 //Event Listeners to increase count for dice rolls
 document.querySelector("#but2").addEventListener("click", () => diceTrack.numsButtons(0))
 document.querySelector("#but3").addEventListener("click", () => diceTrack.numsButtons(1))
@@ -118,6 +154,6 @@ document.querySelector("#but11").addEventListener("click", () => diceTrack.numsB
 document.querySelector("#but12").addEventListener("click", () => diceTrack.numsButtons(10))
 
 //Event Listener to Roll The Dice
-document.querySelector("#roll").addEventListener("click", diceTrack.roll)
+document.querySelector("#roll").addEventListener("click", () => diceTrack.roll())
 //Event Listener to Clear the Dice
-document.querySelector("#clearDice").addEventListener("click", diceTrack.clearDice)
+document.querySelector("#clearDice").addEventListener("click", () => diceTrack.clearDice())
