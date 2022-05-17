@@ -109,6 +109,7 @@ h3{
 #board div{
   display: flex;
   justify-content: center;
+  background-position: center;
 }
 
 #board div div{
@@ -120,6 +121,10 @@ h3{
   clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
   height: 150px;
   width: 150px;
+}
+
+#centerBackground{
+  background-position: center;
 }
 
 #board div div button{
@@ -176,6 +181,10 @@ button.shiftUp, button.shiftDown{
   height: 40px;
   z-index: 3;
   background: none;
+  border: none;
+}
+
+button.shiftUp:hover, button.shiftDown:hover{
   border: solid 1px black;
 }
 
@@ -194,7 +203,7 @@ button.shiftUp, button.shiftDown{
 }
 
 
-/*Card Track Section*/
+/*Trade Track Section*/
 #card, #player, header{
   background: url(../images/woodBack.jpg);
   background-position: center;
@@ -260,7 +269,7 @@ li button{
 
 /*Card Reveal Section*/
 #reveal{
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -303,17 +312,6 @@ tr{
 
 #clearGame{
   margin: 30px;
-}
-
-/*Assign Resources*/
-#assign div{
-  display: flex;
-  justify-content: center;
-}
-
-#assign div div{
-  display: flex;
-  flex-direction: column;
 }
 
 /*Dice Section*/

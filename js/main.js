@@ -2,9 +2,23 @@
 class Board{
     constructor(){
         this._order = []
+        this._tiles = []
         this._turn = 0
+
+        this.createSmallBoard()
     }
     
+    //Create Main Board of Hex Tiles
+    createSmallBoard(){
+        for(let i=0; i<22; i++){
+            if(i<10){
+                this._tiles.push(new Hex(`#hex0${i}`))
+            }else{
+            this._tiles.push(new Hex(`#hex${i}`))
+            }
+        }
+    }
+
     //Creates and Sets the order of players & makes their pieces visible
     createPlayerOrder(color){
         //Check if the tile is empty
@@ -18,6 +32,72 @@ class Board{
             //Assigns color to the next turn order
             document.querySelector(`#order${color}`).innerText = this._order.length  
         }
+    }
+
+    //Change the resource of the hex tile
+    changeTile(hexID){
+        const resourceTiles = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)",
+            "url(images/pieceWool.jpg)","url(images/pieceWheat.jpg)","url(images/pieceOre.jpg)",
+            "url(images/pieceDesert.png)"]
+           
+        let i = resourceTiles.indexOf(this._tiles[+hexID.slice(-2)].resource)
+        i === resourceTiles.length -1 ? i=0 : i++
+
+        document.querySelector(hexID).style.background = resourceTiles[i]
+        document.querySelector(hexID).style.backgroundPosition = "inherit"
+        document.querySelector(hexID).style.backgroundSize ="cover"
+        this._tiles[+hexID.slice(-2)].resource = resourceTiles[i]
+    }
+
+    //Toggle visibility of Stats section
+    showStats(){
+        if(document.querySelector("#reveal").style.display === "flex"){
+            document.querySelector("#reveal").style.display = "none"
+        }else{
+            document.querySelector("#reveal").style.display = "flex"
+        }
+    }
+
+    //Clear all game values
+    clearGame(){
+        const color = ["Blue","Green","Red","Orange","White","Brown"]
+        const resource = ["Wood","Brick","Wool","Wheat","Ore"]
+        this._turn = 0
+
+        //Reset Cards Collected Values back to 0
+        this._order.forEach((col)=>{ 
+            document.querySelector(`#count${col._color}Total`).innerText = 0
+            resource.forEach((r,j) =>{ 
+                document.querySelector(`#count${col._color}${resource[j]}`).innerText = 0
+            })
+        })
+
+        //Clear Order && Delete Player Objects 
+        this._order.forEach(n => document.querySelector(`#order${n._color}`).innerText = "")
+        while(this._order.length > 0){
+            this._order.pop()
+        }
+
+        //Hides all color specific elements
+        color.forEach(col => document.querySelectorAll(`.player${col}`).forEach(n=>n.style.display = "none"))
+
+        //Hide Stats Section
+        document.querySelector("#reveal").style.display = "none"
+
+        //Clear temporary values in Trade Tracker 
+        trade.clearValues()
+
+        //Clear Dice Rolls
+        dice.clearDice()
+    }
+}
+
+class Hex{
+    constructor(id){
+        this._id = id
+        this._num = 0
+        this._settlements = []
+        this.resource = "url(images/pieceDesert.png)"
     }
 }
 
@@ -201,6 +281,13 @@ document.querySelector("#orderOrange").addEventListener("click",() => game.creat
 document.querySelector("#orderWhite").addEventListener("click",() => game.createPlayerOrder("White"))
 document.querySelector("#orderBrown").addEventListener("click",() => game.createPlayerOrder("Brown"))
 
+//Event Listener to Toggle visibility of stat section
+document.querySelector("#showStats").addEventListener("click", () => game.showStats())
+//Event Listener in Player Select to Clear Game 
+document.querySelector("#playerClear").addEventListener("click", () => game.clearGame())
+//Event Listener in Stats to Clear Game
+document.querySelector("#clearGame").addEventListener("click", () => game.clearGame())
+
 //Event Listeners to increase count for dice rolls
 document.querySelector("#but2").addEventListener("click", () => dice.numsButtons(0))
 document.querySelector("#but3").addEventListener("click", () => dice.numsButtons(1))
@@ -299,3 +386,28 @@ document.querySelector("#minusBrownOre").addEventListener("click", () => trade.d
 document.querySelector("#submit").addEventListener("click", () => trade.submitTrade())
 //Event Listener to clear temporary card values
 document.querySelector("#clearValues").addEventListener("click", () => trade.clearValues())
+
+//Event Listeners for Hex Resource Tiles
+document.querySelector("#hex00").addEventListener("click", () => game.changeTile("#hex00"))
+document.querySelector("#hex01").addEventListener("click", () => game.changeTile("#hex01"))
+document.querySelector("#hex02").addEventListener("click", () => game.changeTile("#hex02"))
+document.querySelector("#hex03").addEventListener("click", () => game.changeTile("#hex03"))
+document.querySelector("#hex04").addEventListener("click", () => game.changeTile("#hex04"))
+document.querySelector("#hex05").addEventListener("click", () => game.changeTile("#hex05"))
+document.querySelector("#hex06").addEventListener("click", () => game.changeTile("#hex06"))
+document.querySelector("#hex07").addEventListener("click", () => game.changeTile("#hex07"))
+document.querySelector("#hex08").addEventListener("click", () => game.changeTile("#hex08"))
+document.querySelector("#hex09").addEventListener("click", () => game.changeTile("#hex09"))
+document.querySelector("#hex10").addEventListener("click", () => game.changeTile("#hex10"))
+document.querySelector("#hex11").addEventListener("click", () => game.changeTile("#hex11"))
+document.querySelector("#hex12").addEventListener("click", () => game.changeTile("#hex12"))
+document.querySelector("#hex13").addEventListener("click", () => game.changeTile("#hex13"))
+document.querySelector("#hex14").addEventListener("click", () => game.changeTile("#hex14"))
+document.querySelector("#hex15").addEventListener("click", () => game.changeTile("#hex15"))
+document.querySelector("#hex16").addEventListener("click", () => game.changeTile("#hex16"))
+document.querySelector("#hex17").addEventListener("click", () => game.changeTile("#hex17"))
+document.querySelector("#hex18").addEventListener("click", () => game.changeTile("#hex18"))
+document.querySelector("#hex19").addEventListener("click", () => game.changeTile("#hex19"))
+document.querySelector("#hex20").addEventListener("click", () => game.changeTile("#hex20"))
+document.querySelector("#hex21").addEventListener("click", () => game.changeTile("#hex21"))
+document.querySelector("#hex22").addEventListener("click", () => game.changeTile("#hex22"))

@@ -204,7 +204,6 @@ function clearValues(){
     updateQueue.clear()
 }
 
-TODO:
 //Toggle visibility of Stats section
 function showStats(){
     if(document.querySelector("#reveal").style.display === "flex"){
@@ -281,7 +280,6 @@ function getFetch(){
         });
 }
 
-TODO:
 //Clear all game values
 function clearGame(){
     const color = ["Blue","Green","Red","Orange","White","Brown"]
