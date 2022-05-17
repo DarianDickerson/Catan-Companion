@@ -190,13 +190,13 @@ button.shiftUp, button.shiftDown{
 }
 
 #board .bigBoard{
-  
+  display: none;
 }
 
 
 /*Card Track Section*/
-#card{
-  background: url(../images/pieceBack.jpg);
+#card, #player, header{
+  background: url(../images/woodBack.jpg);
   background-position: center;
   background-repeat: none;
   background-size: cover; 
@@ -260,7 +260,7 @@ li button{
 
 /*Card Reveal Section*/
 #reveal{
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -317,8 +317,8 @@ tr{
 }
 
 /*Dice Section*/
-#dice, header{
-  background: url(../images/woodBack.jpg);
+#dice{
+  background: url(../images/pieceBack.jpg);
   background-repeat: none;
   background-size: cover;
 }
@@ -334,7 +334,7 @@ tr{
 .diceContainer div div{
   display: flex;
   flex-direction: column-reverse;
-  background: linear-gradient(to top, black, #1c1c1c,#333332);
+  background: linear-gradient(to top, rgba(0,0,0,.8), rgba(28,28,28,.8),rgba(50,50,50,.8));
   height: 200px;
 }
 
@@ -357,7 +357,9 @@ img{
 }
 
 .diceContainer span{
+  font-size: 20px;
   color: white;
+  text-shadow: 0.07em 0 black, 0 0.07em black, 0.07em 0 black, 0 -0.07em black;
 }
 
 /*footer nav*/
