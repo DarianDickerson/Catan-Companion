@@ -4,13 +4,15 @@ class Board{
         this._order = []
         this._tiles = []
         this._turn = 0
+        this._resourceImg = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)","url(images/pieceWool.jpg)",
+        "url(images/pieceWheat.jpg)","url(images/pieceOre.jpg)","url(images/pieceDesert.png)"]
 
         this.createSmallBoard()
     }
     
     //Create Main Board of Hex Tiles
     createSmallBoard(){
-        for(let i=0; i<22; i++){
+        for(let i=0; i<31; i++){
             if(i<10){
                 this._tiles.push(new Hex(`#hex0${i}`))
             }else{
@@ -30,23 +32,51 @@ class Board{
             this._order.push(new Player(color,this._order.length))
 
             //Assigns color to the next turn order
-            document.querySelector(`#order${color}`).innerText = this._order.length  
+            document.querySelector(`#order${color}`).innerText = this._order.length
+            
+            if(this._order.length > 4){
+                document.querySelectorAll(".bigBoard").forEach(h => {h.style.display = "flex"})
+            }
         }
+    }
+
+    updateTile(hexID, i){
+        //Update the DOM
+        document.querySelector(hexID).style.background = this._resourceImg[i]
+        document.querySelector(hexID).style.backgroundPosition = "inherit"
+        document.querySelector(hexID).style.backgroundSize ="cover"
+        //Update the Hex Object
+        this._tiles[+hexID.slice(-2)].resource = this._resourceImg[i]
     }
 
     //Change the resource of the hex tile
     changeTile(hexID){
-        const resourceTiles = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)",
-            "url(images/pieceWool.jpg)","url(images/pieceWheat.jpg)","url(images/pieceOre.jpg)",
-            "url(images/pieceDesert.png)"]
-           
-        let i = resourceTiles.indexOf(this._tiles[+hexID.slice(-2)].resource)
-        i === resourceTiles.length -1 ? i=0 : i++
+        //Get current resource the tile is on and in crease the index by 1   
+        let i = this._resourceImg.indexOf(this._tiles[+hexID.slice(-2)].resource)
+        i === this._resourceImg.length -1 ? i=0 : i++
 
-        document.querySelector(hexID).style.background = resourceTiles[i]
-        document.querySelector(hexID).style.backgroundPosition = "inherit"
-        document.querySelector(hexID).style.backgroundSize ="cover"
-        this._tiles[+hexID.slice(-2)].resource = resourceTiles[i]
+        this.updateTile(hexID, i)
+    }
+
+    //Randomizes each hex individually
+    fullRandom(){
+        this._tiles.forEach(h => {
+            let i = Math.floor(Math.random() * 6)
+            this.updateTile(h._id,i)
+            console.log(h._id)
+        })
+    }
+
+    //Randomizes hexes based on how many of each resource is allowed in the game
+    legalRandom(){
+        let legal = [0,0,0,0,1,1,1,2,2,2,2,3,3,3,3,4,4,4,5]
+        this._tiles.forEach((h,i) => {
+            if(!((this._order.length < 5) && (i===12 || i===17 || i===18))){
+                let j = legal[Math.floor(Math.random() * legal.length)]
+                this.updateTile(h._id,j)
+                legal.splice(legal.indexOf(j),1)
+            }
+        })
     }
 
     //Toggle visibility of Stats section
@@ -411,3 +441,10 @@ document.querySelector("#hex19").addEventListener("click", () => game.changeTile
 document.querySelector("#hex20").addEventListener("click", () => game.changeTile("#hex20"))
 document.querySelector("#hex21").addEventListener("click", () => game.changeTile("#hex21"))
 document.querySelector("#hex22").addEventListener("click", () => game.changeTile("#hex22"))
+document.querySelector("#hex23").addEventListener("click", () => game.changeTile("#hex23"))
+document.querySelector("#hex24").addEventListener("click", () => game.changeTile("#hex24"))
+document.querySelector("#hex25").addEventListener("click", () => game.changeTile("#hex25"))
+document.querySelector("#hex26").addEventListener("click", () => game.changeTile("#hex26"))
+document.querySelector("#hex27").addEventListener("click", () => game.changeTile("#hex27"))
+document.querySelector("#hex28").addEventListener("click", () => game.changeTile("#hex28"))
+document.querySelector("#hex29").addEventListener("click", () => game.changeTile("#hex29"))
