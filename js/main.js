@@ -12,7 +12,7 @@ class Board{
     
     //Create Main Board of Hex Tiles
     createSmallBoard(){
-        for(let i=0; i<31; i++){
+        for(let i=0; i<30; i++){
             if(i<10){
                 this._tiles.push(new Hex(`#hex0${i}`))
             }else{
@@ -51,10 +51,9 @@ class Board{
 
     //Change the resource of the hex tile
     changeTile(hexID){
-        //Get current resource the tile is on and in crease the index by 1   
+        //Get current resource the tile is on and increase the index by 1   
         let i = this._resourceImg.indexOf(this._tiles[+hexID.slice(-2)].resource)
         i === this._resourceImg.length -1 ? i=0 : i++
-
         this.updateTile(hexID, i)
     }
 
@@ -63,13 +62,16 @@ class Board{
         this._tiles.forEach(h => {
             let i = Math.floor(Math.random() * 6)
             this.updateTile(h._id,i)
-            console.log(h._id)
         })
     }
 
     //Randomizes hexes based on how many of each resource is allowed in the game
     legalRandom(){
         let legal = [0,0,0,0,1,1,1,2,2,2,2,3,3,3,3,4,4,4,5]
+        let big = [0,0,1,1,2,2,3,3,4,4,5]
+        if(this._order.length > 4){
+            legal = legal.concat(big)
+        }
         this._tiles.forEach((h,i) => {
             if(!((this._order.length < 5) && (i===12 || i===17 || i===18))){
                 let j = legal[Math.floor(Math.random() * legal.length)]
@@ -77,6 +79,12 @@ class Board{
                 legal.splice(legal.indexOf(j),1)
             }
         })
+    }
+
+    //TODO:
+    //PLace Settlement
+    placeSettlement(settleID){
+        document.getElementById(settleID).style.background = "red"
     }
 
     //Toggle visibility of Stats section
@@ -448,3 +456,93 @@ document.querySelector("#hex26").addEventListener("click", () => game.changeTile
 document.querySelector("#hex27").addEventListener("click", () => game.changeTile("#hex27"))
 document.querySelector("#hex28").addEventListener("click", () => game.changeTile("#hex28"))
 document.querySelector("#hex29").addEventListener("click", () => game.changeTile("#hex29"))
+
+//Event Listeners for Settlement placement
+//Row0
+document.getElementById("d-nh-00-nh").addEventListener("click", () => game.placeSettlement("d-nh-00-nh")) 	
+document.getElementById("u:nh:nh:00").addEventListener("click", () => game.placeSettlement("u:nh:nh:00"))
+document.getElementById("d:nh:01:00").addEventListener("click", () => game.placeSettlement("d:nh:01:00"))					
+document.getElementById("u:nh:nh:01").addEventListener("click", () => game.placeSettlement("u:nh:nh:01"))				
+document.getElementById("d:nh:02:01").addEventListener("click", () => game.placeSettlement("d:nh:02:01"))				
+document.getElementById("u:nh:nh:02").addEventListener("click", () => game.placeSettlement("u:nh:nh:02"))				
+document.getElementById("d:nh:nh:02").addEventListener("click", () => game.placeSettlement("d:nh:nh:02"))
+//Row1
+document.getElementById("d:nh:03:nh").addEventListener("click", () => game.placeSettlement("d:nh:03:nh"))						
+document.getElementById("u:nh:00:03").addEventListener("click", () => game.placeSettlement("u:nh:00:03"))
+document.getElementById("d:00:04:03").addEventListener("click", () => game.placeSettlement("d:00:04:03"))						
+document.getElementById("u:00:01:04").addEventListener("click", () => game.placeSettlement("u:00:01:04"))					
+document.getElementById("d:01:05:04").addEventListener("click", () => game.placeSettlement("d:01:05:04"))					
+document.getElementById("u:01:02:05").addEventListener("click", () => game.placeSettlement("u:01:02:05"))					
+document.getElementById("d:02:06:05").addEventListener("click", () => game.placeSettlement("d:02:06:05"))
+document.getElementById("u:02:nh:06").addEventListener("click", () => game.placeSettlement("u:02:nh:06"))						
+document.getElementById("d:nh:nh:06").addEventListener("click", () => game.placeSettlement("d:nh:nh:06"))
+//Row2
+document.getElementById("d:nh:07:nh").addEventListener("click", () => game.placeSettlement("d:nh:07:nh"))						
+document.getElementById("u:nh:03:07").addEventListener("click", () => game.placeSettlement("u:nh:03:07"))
+document.getElementById("d:03:08:07").addEventListener("click", () => game.placeSettlement("d:03:08:07"))						
+document.getElementById("u:03:04:08").addEventListener("click", () => game.placeSettlement("u:03:04:08"))					
+document.getElementById("d:04:09:08").addEventListener("click", () => game.placeSettlement("d:04:09:08"))					
+document.getElementById("u:04:05:09").addEventListener("click", () => game.placeSettlement("u:04:05:09"))					
+document.getElementById("d:05:10:09").addEventListener("click", () => game.placeSettlement("d:05:10:09"))
+document.getElementById("u:05:06:10").addEventListener("click", () => game.placeSettlement("u:05:06:10"))						
+document.getElementById("d:06:11:10").addEventListener("click", () => game.placeSettlement("d:06:11:10"))	
+document.getElementById("u:06:nh:11").addEventListener("click", () => game.placeSettlement("u:06:nh:11"))						
+document.getElementById("d:nh:nh:11").addEventListener("click", () => game.placeSettlement("d:nh:nh:11"))
+//Row3
+document.getElementById("d:nh:12:nh").addEventListener("click", () => game.placeSettlement("d:nh:12:nh"))						
+document.getElementById("u:nh:07:12").addEventListener("click", () => game.placeSettlement("u:nh:07:12"))
+document.getElementById("d:07:13:12").addEventListener("click", () => game.placeSettlement("d:07:13:12"))						
+document.getElementById("u:07:08:13").addEventListener("click", () => game.placeSettlement("u:07:08:13"))					
+document.getElementById("d:08:14:13").addEventListener("click", () => game.placeSettlement("d:08:14:13"))					
+document.getElementById("u:08:09:14").addEventListener("click", () => game.placeSettlement("u:08:09:14"))				
+document.getElementById("d:09:15:14").addEventListener("click", () => game.placeSettlement("d:09:15:14"))
+document.getElementById("u:09:10:15").addEventListener("click", () => game.placeSettlement("u:09:10:15"))						
+document.getElementById("d:10:16:15").addEventListener("click", () => game.placeSettlement("d:10:16:15"))	
+document.getElementById("u:10:11:16").addEventListener("click", () => game.placeSettlement("u:10:11:16"))						
+document.getElementById("d:11:17:16").addEventListener("click", () => game.placeSettlement("d:11:17:16"))	
+document.getElementById("u:11:nh:17").addEventListener("click", () => game.placeSettlement("u:11:nh:17"))						
+document.getElementById("d:nh:nh:17").addEventListener("click", () => game.placeSettlement("d:nh:nh:17"))
+//Row4
+document.getElementById("u:nh:12:nh").addEventListener("click", () => game.placeSettlement("u:nh:12:nh"))
+document.getElementById("d:12:18:nh").addEventListener("click", () => game.placeSettlement("d:12:18:nh"))						
+document.getElementById("u:12:13:18").addEventListener("click", () => game.placeSettlement("u:12:13:18"))				
+document.getElementById("d:13:19:18").addEventListener("click", () => game.placeSettlement("d:13:19:18"))					
+document.getElementById("u:13:14:19").addEventListener("click", () => game.placeSettlement("u:13:14:19"))					
+document.getElementById("d:14:20:19").addEventListener("click", () => game.placeSettlement("d:14:20:19"))
+document.getElementById("u:14:15:20").addEventListener("click", () => game.placeSettlement("u:14:15:20"))						
+document.getElementById("d:15:21:20").addEventListener("click", () => game.placeSettlement("d:15:21:20"))
+document.getElementById("u:15:16:21").addEventListener("click", () => game.placeSettlement("u:15:16:21"))			
+document.getElementById("d:16:22:21").addEventListener("click", () => game.placeSettlement("d:16:22:21"))
+document.getElementById("u:16:17:22").addEventListener("click", () => game.placeSettlement("u:16:17:22"))			
+document.getElementById("d:17:nh:22").addEventListener("click", () => game.placeSettlement("d:17:nh:22"))	
+document.getElementById("u:17:nh:nh").addEventListener("click", () => game.placeSettlement("u:17:nh:nh"))
+//Row5
+document.getElementById("u:nh:18:nh").addEventListener("click", () => game.placeSettlement("u:nh:18:nh"))				
+document.getElementById("d:18:23:nh").addEventListener("click", () => game.placeSettlement("d:18:23:nh"))					
+document.getElementById("u:18:19:23").addEventListener("click", () => game.placeSettlement("u:18:19:23"))					
+document.getElementById("d:19:24:23").addEventListener("click", () => game.placeSettlement("d:19:24:23"))
+document.getElementById("u:19:20:24").addEventListener("click", () => game.placeSettlement("u:19:20:24"))						
+document.getElementById("d:20:25:24").addEventListener("click", () => game.placeSettlement("d:20:25:24"))	
+document.getElementById("u:20:21:25").addEventListener("click", () => game.placeSettlement("u:20:21:25"))						
+document.getElementById("d:21:26:25").addEventListener("click", () => game.placeSettlement("d:21:26:25"))	
+document.getElementById("u:21:22:26").addEventListener("click", () => game.placeSettlement("u:21:22:26"))						
+document.getElementById("d:22:nh:26").addEventListener("click", () => game.placeSettlement("d:22:nh:26"))	
+document.getElementById("u:22:nh:nh").addEventListener("click", () => game.placeSettlement("u:22:nh:nh"))
+//Row6
+document.getElementById("u:nh:23:nh").addEventListener("click", () => game.placeSettlement("u:nh:23:nh"))					
+document.getElementById("d:23:27:nh").addEventListener("click", () => game.placeSettlement("d:23:27:nh"))
+document.getElementById("u:23:24:27").addEventListener("click", () => game.placeSettlement("u:23:24:27"))						
+document.getElementById("d:24:28:27").addEventListener("click", () => game.placeSettlement("d:24:28:27"))	
+document.getElementById("u:24:25:28").addEventListener("click", () => game.placeSettlement("u:24:25:28"))						
+document.getElementById("d:25:29:28").addEventListener("click", () => game.placeSettlement("d:25:29:28"))	
+document.getElementById("u:25:26:29").addEventListener("click", () => game.placeSettlement("u:25:26:29"))						
+document.getElementById("d:26:nh:29").addEventListener("click", () => game.placeSettlement("d:26:nh:29"))	
+document.getElementById("u:26:nh:nh").addEventListener("click", () => game.placeSettlement("u:26:nh:nh"))
+//Row7
+document.getElementById("u:nh:27:nh").addEventListener("click", () => game.placeSettlement("u:nh:27:nh"))						
+document.getElementById("d:27:nh:nh").addEventListener("click", () => game.placeSettlement("d:27:nh:nh"))
+document.getElementById("u:27:28:nh").addEventListener("click", () => game.placeSettlement("u:27:28:nh"))						
+document.getElementById("d:28:nh:nh").addEventListener("click", () => game.placeSettlement("d:28:nh:nh"))	
+document.getElementById("u:28:29:nh").addEventListener("click", () => game.placeSettlement("u:28:29:nh"))						
+document.getElementById("d:29:nh:nh").addEventListener("click", () => game.placeSettlement("d:29:nh:nh"))	
+document.getElementById("u:29:nh:nh").addEventListener("click", () => game.placeSettlement("u:29:nh:nh"))
