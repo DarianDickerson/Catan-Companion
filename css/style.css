@@ -95,11 +95,22 @@ h3{
 
 /*Board Section*/
 #board{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   background: url(../images/ocean.jpg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  height: 1200px;
+  height: 900px;
+}
+
+.mainBoard{
+  
+}
+
+#board aside{
+  border: 2px solid red;
 }
 
 #board h2{
@@ -202,6 +213,20 @@ button.shiftUp:hover, button.shiftDown:hover{
   display: none;
 }
 
+/*Aside Settlement Placer*/
+#place{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+#place button, #place img{
+  height:50px;
+  width: 50px;
+  border-radius: 50%;
+}
 
 /*Trade Track Section*/
 #card, #player, header{
@@ -228,27 +253,27 @@ button.shiftUp:hover, button.shiftDown:hover{
   margin: 20px 0;
 }
 
-.trackBlue, .orderContBlue{
+.trackBlue, .orderContBlue, #settBlue{
   border: solid 10px #08214a;
   background:radial-gradient(lightskyblue, #5b7cb0,#183d8c);
 }
-.trackGreen, .orderContGreen{
+.trackGreen, .orderContGreen, #settGreen{
   border: solid 10px #022e01;
   background: radial-gradient(lightgreen, #418f3f, #095705);
 }
-.trackRed, .orderContRed{
+.trackRed, .orderContRed, #settRed{
   border: solid 10px #4d0206;
   background:radial-gradient(#f28d91,#f55860,#70080d); 
 }
-.trackBrown, .orderContBrown{
+.trackBrown, .orderContBrown, #settBrown{
   border: solid 10px #26130a;
   background:radial-gradient(tan,#947769,#3b190c)
 }
-.trackWhite, .orderContWhite{
+.trackWhite, .orderContWhite, #settWhite{
   border: solid 10px gray;
   background: radial-gradient(white,#edebeb, #b8b9ba)
 }
-.trackOrange, .orderContOrange{
+.trackOrange, .orderContOrange, #settOrange{
   border: solid 10px #751c01;
   background: radial-gradient(#fa9070,#fa693e,#8c2c08);
 }

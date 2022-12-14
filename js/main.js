@@ -36,6 +36,7 @@ class Board{
             
             if(this._order.length > 4){
                 document.querySelectorAll(".bigBoard").forEach(h => {h.style.display = "flex"})
+                document.querySelector("#board").style.height = "1100px"
             }
         }
     }
