@@ -141,8 +141,24 @@ class Hex{
     constructor(id){
         this._id = id
         this._num = 0
+        this._robber = true
         this._settlements = []
         this.resource = "url(images/pieceDesert.png)"
+    }
+
+    //Toggle the robber on the hew piece
+    toggleRobber(hexID){
+        this._robber = !this._robber
+
+        if(this._robber){
+            document.querySelector(hexID).style.background = "url(images/robber.png)"
+            document.querySelector(hexID).style.backgroundPosition = "center"
+            document.querySelector(hexID).style.backgroundRepeat = "none"
+            document.querySelector(hexID).style.backgroundSize = "cover" 
+        }
+        else{
+            document.querySelector(hexID).style.background = "rgba(0,0,0,0)"
+        }
     }
 }
 
@@ -280,7 +296,7 @@ class TradeCards{
         //Add every value that has been altered
         this.updateQueue.forEach(q => {
             let colRes = q.split(" ")                                   //Split String into its values: #span, color, resource
-            let num = document.querySelector(colRes.join("")).innerText //Grabs number the resource changes by from DOM 
+            let num = document.querySelector(colRes.join("")).innerText //Grabs amount the resource changes by from DOM 
             this.colorTrades.add(colRes[1])                             //Adds the color to ColorTrades set to track colors involved in trade
 
             //Add to Trade Array of Player
@@ -309,10 +325,7 @@ class TradeCards{
     }
 }
 
-const game = new Board() 
-//const dice = new DiceTrack()
-//const trade = new TradeCards()
-
+const game = new Board()
 
 //Event Listeners for Player Select
 document.querySelector("#orderBlue").addEventListener("click",() => game.createPlayerOrder("Blue"))
@@ -495,36 +508,36 @@ document.querySelector("#num29").addEventListener("click", () => game.changeTile
 
 //TODO: Create function
 //Event Listeners to Toggle Robber on Hex
-document.querySelector("#rob00").addEventListener("click", () => game.changeTile("#rob00"))
-document.querySelector("#rob01").addEventListener("click", () => game.changeTile("#rob01"))
-document.querySelector("#rob02").addEventListener("click", () => game.changeTile("#rob02"))
-document.querySelector("#rob03").addEventListener("click", () => game.changeTile("#rob03"))
-document.querySelector("#rob04").addEventListener("click", () => game.changeTile("#rob04"))
-document.querySelector("#rob05").addEventListener("click", () => game.changeTile("#rob05"))
-document.querySelector("#rob06").addEventListener("click", () => game.changeTile("#rob06"))
-document.querySelector("#rob07").addEventListener("click", () => game.changeTile("#rob07"))
-document.querySelector("#rob08").addEventListener("click", () => game.changeTile("#rob08"))
-document.querySelector("#rob09").addEventListener("click", () => game.changeTile("#rob09"))
-document.querySelector("#rob10").addEventListener("click", () => game.changeTile("#rob10"))
-document.querySelector("#rob11").addEventListener("click", () => game.changeTile("#rob11"))
-document.querySelector("#rob12").addEventListener("click", () => game.changeTile("#rob12"))
-document.querySelector("#rob13").addEventListener("click", () => game.changeTile("#rob13"))
-document.querySelector("#rob14").addEventListener("click", () => game.changeTile("#rob14"))
-document.querySelector("#rob15").addEventListener("click", () => game.changeTile("#rob15"))
-document.querySelector("#rob16").addEventListener("click", () => game.changeTile("#rob16"))
-document.querySelector("#rob17").addEventListener("click", () => game.changeTile("#rob17"))
-document.querySelector("#rob18").addEventListener("click", () => game.changeTile("#rob18"))
-document.querySelector("#rob19").addEventListener("click", () => game.changeTile("#rob19"))
-document.querySelector("#rob20").addEventListener("click", () => game.changeTile("#rob20"))
-document.querySelector("#rob21").addEventListener("click", () => game.changeTile("#rob21"))
-document.querySelector("#rob22").addEventListener("click", () => game.changeTile("#rob22"))
-document.querySelector("#rob23").addEventListener("click", () => game.changeTile("#rob23"))
-document.querySelector("#rob24").addEventListener("click", () => game.changeTile("#rob24"))
-document.querySelector("#rob25").addEventListener("click", () => game.changeTile("#rob25"))
-document.querySelector("#rob26").addEventListener("click", () => game.changeTile("#rob26"))
-document.querySelector("#rob27").addEventListener("click", () => game.changeTile("#rob27"))
-document.querySelector("#rob28").addEventListener("click", () => game.changeTile("#rob28"))
-document.querySelector("#rob29").addEventListener("click", () => game.changeTile("#rob29"))
+document.querySelector("#rob00").addEventListener("click", () => game._tiles[0].toggleRobber("#rob00"))
+document.querySelector("#rob01").addEventListener("click", () => game._tiles[0].toggleRobber("#rob01"))
+document.querySelector("#rob02").addEventListener("click", () => game._tiles[0].toggleRobber("#rob02"))
+document.querySelector("#rob03").addEventListener("click", () => game._tiles[0].toggleRobber("#rob03"))
+document.querySelector("#rob04").addEventListener("click", () => game._tiles[0].toggleRobber("#rob04"))
+document.querySelector("#rob05").addEventListener("click", () => game._tiles[0].toggleRobber("#rob05"))
+document.querySelector("#rob06").addEventListener("click", () => game._tiles[0].toggleRobber("#rob06"))
+document.querySelector("#rob07").addEventListener("click", () => game._tiles[0].toggleRobber("#rob07"))
+document.querySelector("#rob08").addEventListener("click", () => game._tiles[0].toggleRobber("#rob08"))
+document.querySelector("#rob09").addEventListener("click", () => game._tiles[0].toggleRobber("#rob09"))
+document.querySelector("#rob10").addEventListener("click", () => game._tiles[0].toggleRobber("#rob10"))
+document.querySelector("#rob11").addEventListener("click", () => game._tiles[0].toggleRobber("#rob11"))
+document.querySelector("#rob12").addEventListener("click", () => game._tiles[0].toggleRobber("#rob12"))
+document.querySelector("#rob13").addEventListener("click", () => game._tiles[0].toggleRobber("#rob13"))
+document.querySelector("#rob14").addEventListener("click", () => game._tiles[0].toggleRobber("#rob14"))
+document.querySelector("#rob15").addEventListener("click", () => game._tiles[0].toggleRobber("#rob15"))
+document.querySelector("#rob16").addEventListener("click", () => game._tiles[0].toggleRobber("#rob16"))
+document.querySelector("#rob17").addEventListener("click", () => game._tiles[0].toggleRobber("#rob17"))
+document.querySelector("#rob18").addEventListener("click", () => game._tiles[0].toggleRobber("#rob18"))
+document.querySelector("#rob19").addEventListener("click", () => game._tiles[0].toggleRobber("#rob19"))
+document.querySelector("#rob20").addEventListener("click", () => game._tiles[0].toggleRobber("#rob20"))
+document.querySelector("#rob21").addEventListener("click", () => game._tiles[0].toggleRobber("#rob21"))
+document.querySelector("#rob22").addEventListener("click", () => game._tiles[0].toggleRobber("#rob22"))
+document.querySelector("#rob23").addEventListener("click", () => game._tiles[0].toggleRobber("#rob23"))
+document.querySelector("#rob24").addEventListener("click", () => game._tiles[0].toggleRobber("#rob24"))
+document.querySelector("#rob25").addEventListener("click", () => game._tiles[0].toggleRobber("#rob25"))
+document.querySelector("#rob26").addEventListener("click", () => game._tiles[0].toggleRobber("#rob26"))
+document.querySelector("#rob27").addEventListener("click", () => game._tiles[0].toggleRobber("#rob27"))
+document.querySelector("#rob28").addEventListener("click", () => game._tiles[0].toggleRobber("#rob28"))
+document.querySelector("#rob29").addEventListener("click", () => game._tiles[0].toggleRobber("#rob29"))
 
 //Event Listeners for Settlement placement
 //Row0
