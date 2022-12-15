@@ -213,6 +213,14 @@ button.shiftUp:hover, button.shiftDown:hover{
   display: none;
 }
 
+  /*Robber Button*/
+.robberButton{
+  background: url(../images/robber.png);
+  background-position: center;
+  background-repeat: none;
+  background-size: cover; 
+}
+
 /*Aside Settlement Placer*/
 #place{
   display: flex;
