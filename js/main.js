@@ -3,11 +3,11 @@ class Board{
     constructor(){
         this._order = []    //Holds player objects in their turn order        
         this._tiles = []    //Holds the board tile objects
-        this._turn = 0      //Tracks the game turn
-                            //Below: Array of images for tile backgrounds
-                                //0:Wood, 1:Brick, 2:Wool, 3:Wheat, 4:Ore, 5:Desert 
-        this._resourceImg = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)","url(images/pieceWool.jpg)",
-        "url(images/pieceWheat.jpg)","url(images/pieceOre.jpg)","url(images/pieceDesert.png)"]
+        this._turn = 0      //Tracks the game turn 
+        this._resourceImg = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)",  
+            "url(images/pieceWool.jpg)","url(images/pieceWheat.jpg)",
+            "url(images/pieceOre.jpg)","url(images/pieceDesert.png)"]       //Array of images for tile backgrounds
+                                                                            //0:Wood, 1:Brick, 2:Wool, 3:Wheat, 4:Ore, 5:Desert
 
         this.createSmallBoard()     //Fills this._tiles with Hex objects for each piece of the board
         this._dice = new DiceTrack()
@@ -204,7 +204,6 @@ class DiceTrack{
         document.querySelector(`#span${index+2}`).innerText = this._totalRolls[index]
         this.updateGraph()
 
-        //TODO: Needs access to other object to function 
         if(game._order.length > 0){
             //Increase individual color dice roll count
             game._order[game._turn % game._order.length]._playerRolls[index] += 1
@@ -245,7 +244,6 @@ class DiceTrack{
         })
         this.updateGraph()
 
-        //TODO: Needs access to other object to function
         //Clear individual colors' dice counts
         game._order.forEach(p => p._playerRolls.forEach((r,i) => p._playerRolls[i] = 0))
     }
@@ -285,7 +283,6 @@ class TradeCards{
             let num = document.querySelector(colRes.join("")).innerText //Grabs number the resource changes by from DOM 
             this.colorTrades.add(colRes[1])                             //Adds the color to ColorTrades set to track colors involved in trade
 
-            //TODO: Needs access to other object to function
             //Add to Trade Array of Player
             let i = game._order.findIndex(col => col._color === colRes[1])  //Find the index of the player in the player array
             game._order[i]._trades[resource.indexOf(colRes[2])] += +num     //Update player trade array
@@ -462,6 +459,72 @@ document.querySelector("#hex26").addEventListener("click", () => game.changeTile
 document.querySelector("#hex27").addEventListener("click", () => game.changeTile("#hex27"))
 document.querySelector("#hex28").addEventListener("click", () => game.changeTile("#hex28"))
 document.querySelector("#hex29").addEventListener("click", () => game.changeTile("#hex29"))
+
+//TODO: Create function 
+//Event Listeners for Hex Number Values
+document.querySelector("#num00").addEventListener("click", () => game.changeTile("#num00"))
+document.querySelector("#num01").addEventListener("click", () => game.changeTile("#num01"))
+document.querySelector("#num02").addEventListener("click", () => game.changeTile("#num02"))
+document.querySelector("#num03").addEventListener("click", () => game.changeTile("#num03"))
+document.querySelector("#num04").addEventListener("click", () => game.changeTile("#num04"))
+document.querySelector("#num05").addEventListener("click", () => game.changeTile("#num05"))
+document.querySelector("#num06").addEventListener("click", () => game.changeTile("#num06"))
+document.querySelector("#num07").addEventListener("click", () => game.changeTile("#num07"))
+document.querySelector("#num08").addEventListener("click", () => game.changeTile("#num08"))
+document.querySelector("#num09").addEventListener("click", () => game.changeTile("#num09"))
+document.querySelector("#num10").addEventListener("click", () => game.changeTile("#num10"))
+document.querySelector("#num11").addEventListener("click", () => game.changeTile("#num11"))
+document.querySelector("#num12").addEventListener("click", () => game.changeTile("#num12"))
+document.querySelector("#num13").addEventListener("click", () => game.changeTile("#num13"))
+document.querySelector("#num14").addEventListener("click", () => game.changeTile("#num14"))
+document.querySelector("#num15").addEventListener("click", () => game.changeTile("#num15"))
+document.querySelector("#num16").addEventListener("click", () => game.changeTile("#num16"))
+document.querySelector("#num17").addEventListener("click", () => game.changeTile("#num17"))
+document.querySelector("#num18").addEventListener("click", () => game.changeTile("#num18"))
+document.querySelector("#num19").addEventListener("click", () => game.changeTile("#num19"))
+document.querySelector("#num20").addEventListener("click", () => game.changeTile("#num20"))
+document.querySelector("#num21").addEventListener("click", () => game.changeTile("#num21"))
+document.querySelector("#num22").addEventListener("click", () => game.changeTile("#num22"))
+document.querySelector("#num23").addEventListener("click", () => game.changeTile("#num23"))
+document.querySelector("#num24").addEventListener("click", () => game.changeTile("#num24"))
+document.querySelector("#num25").addEventListener("click", () => game.changeTile("#num25"))
+document.querySelector("#num26").addEventListener("click", () => game.changeTile("#num26"))
+document.querySelector("#num27").addEventListener("click", () => game.changeTile("#num27"))
+document.querySelector("#num28").addEventListener("click", () => game.changeTile("#num28"))
+document.querySelector("#num29").addEventListener("click", () => game.changeTile("#num29"))
+
+//TODO: Create function
+//Event Listeners to Toggle Robber on Hex
+document.querySelector("#rob00").addEventListener("click", () => game.changeTile("#rob00"))
+document.querySelector("#rob01").addEventListener("click", () => game.changeTile("#rob01"))
+document.querySelector("#rob02").addEventListener("click", () => game.changeTile("#rob02"))
+document.querySelector("#rob03").addEventListener("click", () => game.changeTile("#rob03"))
+document.querySelector("#rob04").addEventListener("click", () => game.changeTile("#rob04"))
+document.querySelector("#rob05").addEventListener("click", () => game.changeTile("#rob05"))
+document.querySelector("#rob06").addEventListener("click", () => game.changeTile("#rob06"))
+document.querySelector("#rob07").addEventListener("click", () => game.changeTile("#rob07"))
+document.querySelector("#rob08").addEventListener("click", () => game.changeTile("#rob08"))
+document.querySelector("#rob09").addEventListener("click", () => game.changeTile("#rob09"))
+document.querySelector("#rob10").addEventListener("click", () => game.changeTile("#rob10"))
+document.querySelector("#rob11").addEventListener("click", () => game.changeTile("#rob11"))
+document.querySelector("#rob12").addEventListener("click", () => game.changeTile("#rob12"))
+document.querySelector("#rob13").addEventListener("click", () => game.changeTile("#rob13"))
+document.querySelector("#rob14").addEventListener("click", () => game.changeTile("#rob14"))
+document.querySelector("#rob15").addEventListener("click", () => game.changeTile("#rob15"))
+document.querySelector("#rob16").addEventListener("click", () => game.changeTile("#rob16"))
+document.querySelector("#rob17").addEventListener("click", () => game.changeTile("#rob17"))
+document.querySelector("#rob18").addEventListener("click", () => game.changeTile("#rob18"))
+document.querySelector("#rob19").addEventListener("click", () => game.changeTile("#rob19"))
+document.querySelector("#rob20").addEventListener("click", () => game.changeTile("#rob20"))
+document.querySelector("#rob21").addEventListener("click", () => game.changeTile("#rob21"))
+document.querySelector("#rob22").addEventListener("click", () => game.changeTile("#rob22"))
+document.querySelector("#rob23").addEventListener("click", () => game.changeTile("#rob23"))
+document.querySelector("#rob24").addEventListener("click", () => game.changeTile("#rob24"))
+document.querySelector("#rob25").addEventListener("click", () => game.changeTile("#rob25"))
+document.querySelector("#rob26").addEventListener("click", () => game.changeTile("#rob26"))
+document.querySelector("#rob27").addEventListener("click", () => game.changeTile("#rob27"))
+document.querySelector("#rob28").addEventListener("click", () => game.changeTile("#rob28"))
+document.querySelector("#rob29").addEventListener("click", () => game.changeTile("#rob29"))
 
 //Event Listeners for Settlement placement
 //Row0
