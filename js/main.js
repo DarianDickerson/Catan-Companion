@@ -1,13 +1,17 @@
 //Board Class
 class Board{
     constructor(){
-        this._order = []
-        this._tiles = []
-        this._turn = 0
+        this._order = []    //Holds player objects in their turn order        
+        this._tiles = []    //Holds the board tile objects
+        this._turn = 0      //Tracks the game turn
+                            //Below: Array of images for tile backgrounds
+                                //0:Wood, 1:Brick, 2:Wool, 3:Wheat, 4:Ore, 5:Desert 
         this._resourceImg = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)","url(images/pieceWool.jpg)",
         "url(images/pieceWheat.jpg)","url(images/pieceOre.jpg)","url(images/pieceDesert.png)"]
 
-        this.createSmallBoard()
+        this.createSmallBoard()     //Fills this._tiles with Hex objects for each piece of the board
+        this._dice = new DiceTrack()
+        this._trade = new TradeCards()
     }
     
     //Create Main Board of Hex Tiles
@@ -59,6 +63,7 @@ class Board{
     }
 
     //Randomizes each hex individually
+    //TODO: Add Random number to the tile 
     fullRandom(){
         this._tiles.forEach(h => {
             let i = Math.floor(Math.random() * 6)
@@ -67,6 +72,7 @@ class Board{
     }
 
     //Randomizes hexes based on how many of each resource is allowed in the game
+    //TODO: Add random number to tile 
     legalRandom(){
         let legal = [0,0,0,0,1,1,1,2,2,2,2,3,3,3,3,4,4,4,5]
         let big = [0,0,1,1,2,2,3,3,4,4,5]
@@ -124,10 +130,10 @@ class Board{
         document.querySelector("#reveal").style.display = "none"
 
         //Clear temporary values in Trade Tracker 
-        trade.clearValues()
+        this._trade.clearValues()
 
         //Clear Dice Rolls
-        dice.clearDice()
+        this._dice.clearDice()
     }
 }
 
@@ -275,23 +281,22 @@ class TradeCards{
         
         //Add every value that has been altered
         this.updateQueue.forEach(q => {
-            //"#span color resource"
-            let colRes = q.split(" ")
-            let num = document.querySelector(colRes.join("")).innerText
-            this.colorTrades.add(colRes[1])
+            let colRes = q.split(" ")                                   //Split String into its values: #span, color, resource
+            let num = document.querySelector(colRes.join("")).innerText //Grabs number the resource changes by from DOM 
+            this.colorTrades.add(colRes[1])                             //Adds the color to ColorTrades set to track colors involved in trade
 
             //TODO: Needs access to other object to function
             //Add to Trade Array of Player
-            let i = game._order.findIndex(col => col === colRes[1])
-            game._order[i]._trades[resource.indexOf(colRes[2])] += num
-            //TODO: Update Stats to DOM
+            let i = game._order.findIndex(col => col._color === colRes[1])  //Find the index of the player in the player array
+            game._order[i]._trades[resource.indexOf(colRes[2])] += +num     //Update player trade array
+            //TODO: Update Final Stats to DOM
         })
 
         //Increase trade counter for colors
         this.colorTrades.forEach(t =>{
-            let i = game._order.findIndex(col => col === t)
+            let i = game._order.findIndex(col => col._color === t)
             game._order[i]._tradeCount += 1
-            //TODO: Update Stats to DOM
+            //TODO: Update Final Stats to DOM
         })
         
         this.colorTrades.clear()
@@ -308,8 +313,8 @@ class TradeCards{
 }
 
 const game = new Board() 
-const dice = new DiceTrack()
-const trade = new TradeCards()
+//const dice = new DiceTrack()
+//const trade = new TradeCards()
 
 
 //Event Listeners for Player Select
@@ -328,103 +333,103 @@ document.querySelector("#playerClear").addEventListener("click", () => game.clea
 document.querySelector("#clearGame").addEventListener("click", () => game.clearGame())
 
 //Event Listeners to increase count for dice rolls
-document.querySelector("#but2").addEventListener("click", () => dice.numsButtons(0))
-document.querySelector("#but3").addEventListener("click", () => dice.numsButtons(1))
-document.querySelector("#but4").addEventListener("click", () => dice.numsButtons(2))
-document.querySelector("#but5").addEventListener("click", () => dice.numsButtons(3))
-document.querySelector("#but6").addEventListener("click", () => dice.numsButtons(4))
-document.querySelector("#but7").addEventListener("click", () => dice.numsButtons(5))
-document.querySelector("#but8").addEventListener("click", () => dice.numsButtons(6))
-document.querySelector("#but9").addEventListener("click", () => dice.numsButtons(7))
-document.querySelector("#but10").addEventListener("click", () => dice.numsButtons(8))
-document.querySelector("#but11").addEventListener("click", () => dice.numsButtons(9))
-document.querySelector("#but12").addEventListener("click", () => dice.numsButtons(10))
+document.querySelector("#but2").addEventListener("click", () => game._dice.numsButtons(0))
+document.querySelector("#but3").addEventListener("click", () => game._dice.numsButtons(1))
+document.querySelector("#but4").addEventListener("click", () => game._dice.numsButtons(2))
+document.querySelector("#but5").addEventListener("click", () => game._dice.numsButtons(3))
+document.querySelector("#but6").addEventListener("click", () => game._dice.numsButtons(4))
+document.querySelector("#but7").addEventListener("click", () => game._dice.numsButtons(5))
+document.querySelector("#but8").addEventListener("click", () => game._dice.numsButtons(6))
+document.querySelector("#but9").addEventListener("click", () => game._dice.numsButtons(7))
+document.querySelector("#but10").addEventListener("click", () => game._dice.numsButtons(8))
+document.querySelector("#but11").addEventListener("click", () => game._dice.numsButtons(9))
+document.querySelector("#but12").addEventListener("click", () => game._dice.numsButtons(10))
 
 //Event Listener to Roll The Dice
-document.querySelector("#roll").addEventListener("click", () => dice.roll())
+document.querySelector("#roll").addEventListener("click", () => game._dice.roll())
 //Event Listener to Clear the Dice
-document.querySelector("#clearDice").addEventListener("click", () => dice.clearDice())
+document.querySelector("#clearDice").addEventListener("click", () => game._dice.clearDice())
 
 //Event Listeners to increase count for cards
 //Blue
-document.querySelector("#plusBlueWood").addEventListener("click", () => trade.increaseCard("Blue","Wood"))
-document.querySelector("#plusBlueBrick").addEventListener("click", () => trade.increaseCard("Blue","Brick"))
-document.querySelector("#plusBlueWool").addEventListener("click", () => trade.increaseCard("Blue","Wool"))
-document.querySelector("#plusBlueWheat").addEventListener("click", () => trade.increaseCard("Blue","Wheat"))
-document.querySelector("#plusBlueOre").addEventListener("click", () => trade.increaseCard("Blue","Ore"))
+document.querySelector("#plusBlueWood").addEventListener("click", () => game._trade.increaseCard("Blue","Wood"))
+document.querySelector("#plusBlueBrick").addEventListener("click", () => game._trade.increaseCard("Blue","Brick"))
+document.querySelector("#plusBlueWool").addEventListener("click", () => game._trade.increaseCard("Blue","Wool"))
+document.querySelector("#plusBlueWheat").addEventListener("click", () => game._trade.increaseCard("Blue","Wheat"))
+document.querySelector("#plusBlueOre").addEventListener("click", () => game._trade.increaseCard("Blue","Ore"))
 //Green
-document.querySelector("#plusGreenWood").addEventListener("click", () => trade.increaseCard("Green","Wood"))
-document.querySelector("#plusGreenBrick").addEventListener("click", () => trade.increaseCard("Green","Brick"))
-document.querySelector("#plusGreenWool").addEventListener("click", () => trade.increaseCard("Green","Wool"))
-document.querySelector("#plusGreenWheat").addEventListener("click", () => trade.increaseCard("Green","Wheat"))
-document.querySelector("#plusGreenOre").addEventListener("click", () => trade.increaseCard("Green","Ore"))
+document.querySelector("#plusGreenWood").addEventListener("click", () => game._trade.increaseCard("Green","Wood"))
+document.querySelector("#plusGreenBrick").addEventListener("click", () => game._trade.increaseCard("Green","Brick"))
+document.querySelector("#plusGreenWool").addEventListener("click", () => game._trade.increaseCard("Green","Wool"))
+document.querySelector("#plusGreenWheat").addEventListener("click", () => game._trade.increaseCard("Green","Wheat"))
+document.querySelector("#plusGreenOre").addEventListener("click", () => game._trade.increaseCard("Green","Ore"))
 //Red
-document.querySelector("#plusRedWood").addEventListener("click", () => trade.increaseCard("Red","Wood"))
-document.querySelector("#plusRedBrick").addEventListener("click", () => trade.increaseCard("Red","Brick"))
-document.querySelector("#plusRedWool").addEventListener("click", () => trade.increaseCard("Red","Wool"))
-document.querySelector("#plusRedWheat").addEventListener("click", () => trade.increaseCard("Red","Wheat"))
-document.querySelector("#plusRedOre").addEventListener("click", () => trade.increaseCard("Red","Ore"))
+document.querySelector("#plusRedWood").addEventListener("click", () => game._trade.increaseCard("Red","Wood"))
+document.querySelector("#plusRedBrick").addEventListener("click", () => game._trade.increaseCard("Red","Brick"))
+document.querySelector("#plusRedWool").addEventListener("click", () => game._trade.increaseCard("Red","Wool"))
+document.querySelector("#plusRedWheat").addEventListener("click", () => game._trade.increaseCard("Red","Wheat"))
+document.querySelector("#plusRedOre").addEventListener("click", () => game._trade.increaseCard("Red","Ore"))
 //Orange
-document.querySelector("#plusOrangeWood").addEventListener("click", () => trade.increaseCard("Orange","Wood"))
-document.querySelector("#plusOrangeBrick").addEventListener("click", () => trade.increaseCard("Orange","Brick"))
-document.querySelector("#plusOrangeWool").addEventListener("click", () => trade.increaseCard("Orange","Wool"))
-document.querySelector("#plusOrangeWheat").addEventListener("click", () => trade.increaseCard("Orange","Wheat"))
-document.querySelector("#plusOrangeOre").addEventListener("click", () => trade.increaseCard("Orange","Ore"))
+document.querySelector("#plusOrangeWood").addEventListener("click", () => game._trade.increaseCard("Orange","Wood"))
+document.querySelector("#plusOrangeBrick").addEventListener("click", () => game._trade.increaseCard("Orange","Brick"))
+document.querySelector("#plusOrangeWool").addEventListener("click", () => game._trade.increaseCard("Orange","Wool"))
+document.querySelector("#plusOrangeWheat").addEventListener("click", () => game._trade.increaseCard("Orange","Wheat"))
+document.querySelector("#plusOrangeOre").addEventListener("click", () => game._trade.increaseCard("Orange","Ore"))
 //White
-document.querySelector("#plusWhiteWood").addEventListener("click", () => trade.increaseCard("White","Wood"))
-document.querySelector("#plusWhiteBrick").addEventListener("click", () => trade.increaseCard("White","Brick"))
-document.querySelector("#plusWhiteWool").addEventListener("click", () => trade.increaseCard("White","Wool"))
-document.querySelector("#plusWhiteWheat").addEventListener("click", () => trade.increaseCard("White","Wheat"))
-document.querySelector("#plusWhiteOre").addEventListener("click", () => trade.increaseCard("White","Ore"))
+document.querySelector("#plusWhiteWood").addEventListener("click", () => game._trade.increaseCard("White","Wood"))
+document.querySelector("#plusWhiteBrick").addEventListener("click", () => game._trade.increaseCard("White","Brick"))
+document.querySelector("#plusWhiteWool").addEventListener("click", () => game._trade.increaseCard("White","Wool"))
+document.querySelector("#plusWhiteWheat").addEventListener("click", () => game._trade.increaseCard("White","Wheat"))
+document.querySelector("#plusWhiteOre").addEventListener("click", () => game._trade.increaseCard("White","Ore"))
 //Brown
-document.querySelector("#plusBrownWood").addEventListener("click", () => trade.increaseCard("Brown","Wood"))
-document.querySelector("#plusBrownBrick").addEventListener("click", () => trade.increaseCard("Brown","Brick"))
-document.querySelector("#plusBrownWool").addEventListener("click", () => trade.increaseCard("Brown","Wool"))
-document.querySelector("#plusBrownWheat").addEventListener("click", () => trade.increaseCard("Brown","Wheat"))
-document.querySelector("#plusBrownOre").addEventListener("click", () => trade.increaseCard("Brown","Ore"))
+document.querySelector("#plusBrownWood").addEventListener("click", () => game._trade.increaseCard("Brown","Wood"))
+document.querySelector("#plusBrownBrick").addEventListener("click", () => game._trade.increaseCard("Brown","Brick"))
+document.querySelector("#plusBrownWool").addEventListener("click", () => game._trade.increaseCard("Brown","Wool"))
+document.querySelector("#plusBrownWheat").addEventListener("click", () => game._trade.increaseCard("Brown","Wheat"))
+document.querySelector("#plusBrownOre").addEventListener("click", () => game._trade.increaseCard("Brown","Ore"))
 
 //Event Listeners to decrease count for cards
 //Blue
-document.querySelector("#minusBlueWood").addEventListener("click", () => trade.decreaseCard("Blue","Wood"))
-document.querySelector("#minusBlueBrick").addEventListener("click", () => trade.decreaseCard("Blue","Brick"))
-document.querySelector("#minusBlueWool").addEventListener("click", () => trade.decreaseCard("Blue","Wool"))
-document.querySelector("#minusBlueWheat").addEventListener("click", () => trade.decreaseCard("Blue","Wheat"))
-document.querySelector("#minusBlueOre").addEventListener("click", () => trade.decreaseCard("Blue","Ore"))
+document.querySelector("#minusBlueWood").addEventListener("click", () => game._trade.decreaseCard("Blue","Wood"))
+document.querySelector("#minusBlueBrick").addEventListener("click", () => game._trade.decreaseCard("Blue","Brick"))
+document.querySelector("#minusBlueWool").addEventListener("click", () => game._trade.decreaseCard("Blue","Wool"))
+document.querySelector("#minusBlueWheat").addEventListener("click", () => game._trade.decreaseCard("Blue","Wheat"))
+document.querySelector("#minusBlueOre").addEventListener("click", () => game._trade.decreaseCard("Blue","Ore"))
 //Green
-document.querySelector("#minusGreenWood").addEventListener("click", () => trade.decreaseCard("Green","Wood"))
-document.querySelector("#minusGreenBrick").addEventListener("click", () => trade.decreaseCard("Green","Brick"))
-document.querySelector("#minusGreenWool").addEventListener("click", () => trade.decreaseCard("Green","Wool"))
-document.querySelector("#minusGreenWheat").addEventListener("click", () => trade.decreaseCard("Green","Wheat"))
-document.querySelector("#minusGreenOre").addEventListener("click", () => trade.decreaseCard("Green","Ore"))
+document.querySelector("#minusGreenWood").addEventListener("click", () => game._trade.decreaseCard("Green","Wood"))
+document.querySelector("#minusGreenBrick").addEventListener("click", () => game._trade.decreaseCard("Green","Brick"))
+document.querySelector("#minusGreenWool").addEventListener("click", () => game._trade.decreaseCard("Green","Wool"))
+document.querySelector("#minusGreenWheat").addEventListener("click", () => game._trade.decreaseCard("Green","Wheat"))
+document.querySelector("#minusGreenOre").addEventListener("click", () => game._trade.decreaseCard("Green","Ore"))
 //Red
-document.querySelector("#minusRedWood").addEventListener("click", () => trade.decreaseCard("Red","Wood"))
-document.querySelector("#minusRedBrick").addEventListener("click", () => trade.decreaseCard("Red","Brick"))
-document.querySelector("#minusRedWool").addEventListener("click", () => trade.decreaseCard("Red","Wool"))
-document.querySelector("#minusRedWheat").addEventListener("click", () => trade.decreaseCard("Red","Wheat"))
-document.querySelector("#minusRedOre").addEventListener("click", () => trade.decreaseCard("Red","Ore"))
+document.querySelector("#minusRedWood").addEventListener("click", () => game._trade.decreaseCard("Red","Wood"))
+document.querySelector("#minusRedBrick").addEventListener("click", () => game._trade.decreaseCard("Red","Brick"))
+document.querySelector("#minusRedWool").addEventListener("click", () => game._trade.decreaseCard("Red","Wool"))
+document.querySelector("#minusRedWheat").addEventListener("click", () => game._trade.decreaseCard("Red","Wheat"))
+document.querySelector("#minusRedOre").addEventListener("click", () => game._trade.decreaseCard("Red","Ore"))
 //Orange
-document.querySelector("#minusOrangeWood").addEventListener("click", () => trade.decreaseCard("Orange","Wood"))
-document.querySelector("#minusOrangeBrick").addEventListener("click", () => trade.decreaseCard("Orange","Brick"))
-document.querySelector("#minusOrangeWool").addEventListener("click", () => trade.decreaseCard("Orange","Wool"))
-document.querySelector("#minusOrangeWheat").addEventListener("click", () => trade.decreaseCard("Orange","Wheat"))
-document.querySelector("#minusOrangeOre").addEventListener("click", () => trade.decreaseCard("Orange","Ore"))
+document.querySelector("#minusOrangeWood").addEventListener("click", () => game._trade.decreaseCard("Orange","Wood"))
+document.querySelector("#minusOrangeBrick").addEventListener("click", () => game._trade.decreaseCard("Orange","Brick"))
+document.querySelector("#minusOrangeWool").addEventListener("click", () => game._trade.decreaseCard("Orange","Wool"))
+document.querySelector("#minusOrangeWheat").addEventListener("click", () => game._trade.decreaseCard("Orange","Wheat"))
+document.querySelector("#minusOrangeOre").addEventListener("click", () => game._trade.decreaseCard("Orange","Ore"))
 //White
-document.querySelector("#minusWhiteWood").addEventListener("click", () => trade.decreaseCard("White","Wood"))
-document.querySelector("#minusWhiteBrick").addEventListener("click", () => trade.decreaseCard("White","Brick"))
-document.querySelector("#minusWhiteWool").addEventListener("click", () => trade.decreaseCard("White","Wool"))
-document.querySelector("#minusWhiteWheat").addEventListener("click", () => trade.decreaseCard("White","Wheat"))
-document.querySelector("#minusWhiteOre").addEventListener("click", () => trade.decreaseCard("White","Ore"))
+document.querySelector("#minusWhiteWood").addEventListener("click", () => game._trade.decreaseCard("White","Wood"))
+document.querySelector("#minusWhiteBrick").addEventListener("click", () => game._trade.decreaseCard("White","Brick"))
+document.querySelector("#minusWhiteWool").addEventListener("click", () => game._trade.decreaseCard("White","Wool"))
+document.querySelector("#minusWhiteWheat").addEventListener("click", () => game._trade.decreaseCard("White","Wheat"))
+document.querySelector("#minusWhiteOre").addEventListener("click", () => game._trade.decreaseCard("White","Ore"))
 //Brown
-document.querySelector("#minusBrownWood").addEventListener("click", () => trade.decreaseCard("Brown","Wood"))
-document.querySelector("#minusBrownBrick").addEventListener("click", () => trade.decreaseCard("Brown","Brick"))
-document.querySelector("#minusBrownWool").addEventListener("click", () => trade.decreaseCard("Brown","Wool"))
-document.querySelector("#minusBrownWheat").addEventListener("click", () => trade.decreaseCard("Brown","Wheat"))
-document.querySelector("#minusBrownOre").addEventListener("click", () => trade.decreaseCard("Brown","Ore"))
+document.querySelector("#minusBrownWood").addEventListener("click", () => game._trade.decreaseCard("Brown","Wood"))
+document.querySelector("#minusBrownBrick").addEventListener("click", () => game._trade.decreaseCard("Brown","Brick"))
+document.querySelector("#minusBrownWool").addEventListener("click", () => game._trade.decreaseCard("Brown","Wool"))
+document.querySelector("#minusBrownWheat").addEventListener("click", () => game._trade.decreaseCard("Brown","Wheat"))
+document.querySelector("#minusBrownOre").addEventListener("click", () => game._trade.decreaseCard("Brown","Ore"))
 
 //Event Listener to submit cards to player totals
-document.querySelector("#submit").addEventListener("click", () => trade.submitTrade())
+document.querySelector("#submit").addEventListener("click", () => game._trade.submitTrade())
 //Event Listener to clear temporary card values
-document.querySelector("#clearValues").addEventListener("click", () => trade.clearValues())
+document.querySelector("#clearValues").addEventListener("click", () => game._trade.clearValues())
 
 //Event Listeners for Hex Resource Tiles
 document.querySelector("#hex00").addEventListener("click", () => game.changeTile("#hex00"))
