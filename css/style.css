@@ -213,9 +213,22 @@ button.shiftUp:hover, button.shiftDown:hover{
   display: none;
 }
 
+/*TODO: Dont know if I want to keep this*/
+/*Attemped fix for layering clickable elements in the board*/
+.robberButton, .numsButton{
+  
+}
+
+.numsButton{
+  color: black;
+  /*text-shadow: 0.07em 0 black, 0 0.07em black, 0.07em 0 black, 0 -0.07em black;*/
+  font-size: 170%;
+  font-weight: bolder;
+}
+
   /*Robber Button*/
 .robberButton{
-  background: url(../images/robber.png);
+  background: rgba(0,0,0,0);
   background-position: center;
   background-repeat: none;
   background-size: cover; 
