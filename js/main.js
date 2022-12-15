@@ -9,13 +9,13 @@ class Board{
             "url(images/pieceOre.jpg)","url(images/pieceDesert.png)"]       //Array of images for tile backgrounds
                                                                             //0:Wood, 1:Brick, 2:Wool, 3:Wheat, 4:Ore, 5:Desert
 
-        this.createSmallBoard()     //Fills this._tiles with Hex objects for each piece of the board
+        this.createBoard()     //Fills this._tiles with Hex objects for each piece of the board
         this._dice = new DiceTrack()
         this._trade = new TradeCards()
     }
     
     //Create Main Board of Hex Tiles
-    createSmallBoard(){
+    createBoard(){
         for(let i=0; i<30; i++){
             if(i<10){
                 this._tiles.push(new Hex(`#hex0${i}`))
@@ -38,9 +38,10 @@ class Board{
             //Assigns color to the next turn order
             document.querySelector(`#order${color}`).innerText = this._order.length
             
-            if(this._order.length > 4){
+            if(this._order.length === 5){
                 document.querySelectorAll(".bigBoard").forEach(h => {h.style.display = "flex"})
                 document.querySelector("#board").style.height = "1100px"
+                this.legalRandom()
             }
         }
     }
@@ -63,27 +64,50 @@ class Board{
     }
 
     //Randomizes each hex individually
-    //TODO: Add Random number to the tile 
     fullRandom(){
-        this._tiles.forEach(h => {
-            let i = Math.floor(Math.random() * 6)
-            this.updateTile(h._id,i)
+        this._tiles.forEach((hex,i) => {
+            let j = Math.floor(Math.random() * 6)   //Random value 0-5 refering to recource
+            this.updateTile(hex._id,j)              //Update the Tile on the DOM
+            
+            if(j === 5) j = 1                       //Tile is Desert, no number needed
+            else{                                   //Random number 2 - 12, excluding 7
+                do{
+                    j = Math.floor(Math.random() * 11) + 2
+                }while(j === 7)
+            }
+
+            hex._num = j                                        //Set the Hex number
+            hex.updateHexNumber("#num" + hex._id.substr(4), i)  //Update Hex Number to the DOM
         })
     }
 
     //Randomizes hexes based on how many of each resource is allowed in the game
-    //TODO: Add random number to tile 
     legalRandom(){
+        //Resourece Tiles
         let legal = [0,0,0,0,1,1,1,2,2,2,2,3,3,3,3,4,4,4,5]
         let big = [0,0,1,1,2,2,3,3,4,4,5]
-        if(this._order.length > 4){
-            legal = legal.concat(big)
+        //Number Tiles
+        let numLegal = [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12]
+        let numBig = [2,3,4,5,6,8,9,10,11,12]
+
+        if(this._order.length > 4){             //More than 4 players converts to Big Board
+            legal = legal.concat(big)           //Add extra big board resource pieces to legal array
+            numLegal = numLegal.concat(numBig)  //Add extra big board numbers to legal numbers array
         }
-        this._tiles.forEach((h,i) => {
-            if(!((this._order.length < 5) && (i===12 || i===17 || i===18))){
-                let j = legal[Math.floor(Math.random() * legal.length)]
-                this.updateTile(h._id,j)
-                legal.splice(legal.indexOf(j),1)
+        this._tiles.forEach((hex,i) => {
+            if(!((this._order.length < 5) && (i===12 || i===17 || i===18 || i > 21))){    //Skip if small board & on a tile only meant for big board
+                let j = legal[Math.floor(Math.random() * legal.length)]         //Grab random resource in legal array
+                this.updateTile(hex._id,j)                                      //Update tile on DOM
+                legal.splice(legal.indexOf(j),1)                                //Remove the used resource from legal array
+
+                if(j === 5) j = 1                                               //Tile is a desert, number not needed
+                else{
+                    j = numLegal[Math.floor(Math.random() * numLegal.length)]   //Grab random number from numLegal array
+                    numLegal.splice(numLegal.indexOf(j),1)                      //Remove used number from numLegal array
+                }
+
+                hex._num = j                                            //Set the hex number
+                hex.updateHexNumber("#num" + hex._id.substr(4), i)      //Update the Dom
             }
         })
     }
@@ -140,17 +164,38 @@ class Board{
 class Hex{
     constructor(id){
         this._id = id
-        this._num = 0
-        this._robber = true
+        this._num = 1
+        this._robber = false
         this._settlements = []
         this.resource = "url(images/pieceDesert.png)"
     }
 
+    //Set Hex Number
+    setHexNumber(hexID){
+        let i = +hexID.substr(4)
+        game._tiles[i]._num += 1
+
+        if(game._tiles[i]._num === 7) game._tiles[i]._num += 1
+        else if(game._tiles[i]._num === 13) game._tiles[i]._num = 1
+
+        this.updateHexNumber(hexID, i)
+    }
+
+    //Updates hex number on the DOM
+    updateHexNumber(hexID, i){
+        if(game._tiles[i]._num === 1) document.querySelector(hexID).innerText = ""
+        else document.querySelector(hexID).innerText = game._tiles[i]._num
+
+        if(game._tiles[i]._num === 6 || game._tiles[i]._num === 8) document.querySelector(hexID).style.color = "red"
+        else document.querySelector(hexID).style.color = "black"
+    }
+
     //Toggle the robber on the hew piece
     toggleRobber(hexID){
-        this._robber = !this._robber
-
-        if(this._robber){
+        let i = +hexID.substr(4)
+        game._tiles[i]._robber = !game._tiles[i]._robber
+        
+        if(game._tiles[i]._robber){
             document.querySelector(hexID).style.background = "url(images/robber.png)"
             document.querySelector(hexID).style.backgroundPosition = "center"
             document.querySelector(hexID).style.backgroundRepeat = "none"
@@ -326,6 +371,7 @@ class TradeCards{
 }
 
 const game = new Board()
+game.legalRandom()
 
 //Event Listeners for Player Select
 document.querySelector("#orderBlue").addEventListener("click",() => game.createPlayerOrder("Blue"))
@@ -473,40 +519,38 @@ document.querySelector("#hex27").addEventListener("click", () => game.changeTile
 document.querySelector("#hex28").addEventListener("click", () => game.changeTile("#hex28"))
 document.querySelector("#hex29").addEventListener("click", () => game.changeTile("#hex29"))
 
-//TODO: Create function 
 //Event Listeners for Hex Number Values
-document.querySelector("#num00").addEventListener("click", () => game.changeTile("#num00"))
-document.querySelector("#num01").addEventListener("click", () => game.changeTile("#num01"))
-document.querySelector("#num02").addEventListener("click", () => game.changeTile("#num02"))
-document.querySelector("#num03").addEventListener("click", () => game.changeTile("#num03"))
-document.querySelector("#num04").addEventListener("click", () => game.changeTile("#num04"))
-document.querySelector("#num05").addEventListener("click", () => game.changeTile("#num05"))
-document.querySelector("#num06").addEventListener("click", () => game.changeTile("#num06"))
-document.querySelector("#num07").addEventListener("click", () => game.changeTile("#num07"))
-document.querySelector("#num08").addEventListener("click", () => game.changeTile("#num08"))
-document.querySelector("#num09").addEventListener("click", () => game.changeTile("#num09"))
-document.querySelector("#num10").addEventListener("click", () => game.changeTile("#num10"))
-document.querySelector("#num11").addEventListener("click", () => game.changeTile("#num11"))
-document.querySelector("#num12").addEventListener("click", () => game.changeTile("#num12"))
-document.querySelector("#num13").addEventListener("click", () => game.changeTile("#num13"))
-document.querySelector("#num14").addEventListener("click", () => game.changeTile("#num14"))
-document.querySelector("#num15").addEventListener("click", () => game.changeTile("#num15"))
-document.querySelector("#num16").addEventListener("click", () => game.changeTile("#num16"))
-document.querySelector("#num17").addEventListener("click", () => game.changeTile("#num17"))
-document.querySelector("#num18").addEventListener("click", () => game.changeTile("#num18"))
-document.querySelector("#num19").addEventListener("click", () => game.changeTile("#num19"))
-document.querySelector("#num20").addEventListener("click", () => game.changeTile("#num20"))
-document.querySelector("#num21").addEventListener("click", () => game.changeTile("#num21"))
-document.querySelector("#num22").addEventListener("click", () => game.changeTile("#num22"))
-document.querySelector("#num23").addEventListener("click", () => game.changeTile("#num23"))
-document.querySelector("#num24").addEventListener("click", () => game.changeTile("#num24"))
-document.querySelector("#num25").addEventListener("click", () => game.changeTile("#num25"))
-document.querySelector("#num26").addEventListener("click", () => game.changeTile("#num26"))
-document.querySelector("#num27").addEventListener("click", () => game.changeTile("#num27"))
-document.querySelector("#num28").addEventListener("click", () => game.changeTile("#num28"))
-document.querySelector("#num29").addEventListener("click", () => game.changeTile("#num29"))
+document.querySelector("#num00").addEventListener("click", () => game._tiles[0].setHexNumber("#num00"))
+document.querySelector("#num01").addEventListener("click", () => game._tiles[0].setHexNumber("#num01"))
+document.querySelector("#num02").addEventListener("click", () => game._tiles[0].setHexNumber("#num02"))
+document.querySelector("#num03").addEventListener("click", () => game._tiles[0].setHexNumber("#num03"))
+document.querySelector("#num04").addEventListener("click", () => game._tiles[0].setHexNumber("#num04"))
+document.querySelector("#num05").addEventListener("click", () => game._tiles[0].setHexNumber("#num05"))
+document.querySelector("#num06").addEventListener("click", () => game._tiles[0].setHexNumber("#num06"))
+document.querySelector("#num07").addEventListener("click", () => game._tiles[0].setHexNumber("#num07"))
+document.querySelector("#num08").addEventListener("click", () => game._tiles[0].setHexNumber("#num08"))
+document.querySelector("#num09").addEventListener("click", () => game._tiles[0].setHexNumber("#num09"))
+document.querySelector("#num10").addEventListener("click", () => game._tiles[0].setHexNumber("#num10"))
+document.querySelector("#num11").addEventListener("click", () => game._tiles[0].setHexNumber("#num11"))
+document.querySelector("#num12").addEventListener("click", () => game._tiles[0].setHexNumber("#num12"))
+document.querySelector("#num13").addEventListener("click", () => game._tiles[0].setHexNumber("#num13"))
+document.querySelector("#num14").addEventListener("click", () => game._tiles[0].setHexNumber("#num14"))
+document.querySelector("#num15").addEventListener("click", () => game._tiles[0].setHexNumber("#num15"))
+document.querySelector("#num16").addEventListener("click", () => game._tiles[0].setHexNumber("#num16"))
+document.querySelector("#num17").addEventListener("click", () => game._tiles[0].setHexNumber("#num17"))
+document.querySelector("#num18").addEventListener("click", () => game._tiles[0].setHexNumber("#num18"))
+document.querySelector("#num19").addEventListener("click", () => game._tiles[0].setHexNumber("#num19"))
+document.querySelector("#num20").addEventListener("click", () => game._tiles[0].setHexNumber("#num20"))
+document.querySelector("#num21").addEventListener("click", () => game._tiles[0].setHexNumber("#num21"))
+document.querySelector("#num22").addEventListener("click", () => game._tiles[0].setHexNumber("#num22"))
+document.querySelector("#num23").addEventListener("click", () => game._tiles[0].setHexNumber("#num23"))
+document.querySelector("#num24").addEventListener("click", () => game._tiles[0].setHexNumber("#num24"))
+document.querySelector("#num25").addEventListener("click", () => game._tiles[0].setHexNumber("#num25"))
+document.querySelector("#num26").addEventListener("click", () => game._tiles[0].setHexNumber("#num26"))
+document.querySelector("#num27").addEventListener("click", () => game._tiles[0].setHexNumber("#num27"))
+document.querySelector("#num28").addEventListener("click", () => game._tiles[0].setHexNumber("#num28"))
+document.querySelector("#num29").addEventListener("click", () => game._tiles[0].setHexNumber("#num29"))
 
-//TODO: Create function
 //Event Listeners to Toggle Robber on Hex
 document.querySelector("#rob00").addEventListener("click", () => game._tiles[0].toggleRobber("#rob00"))
 document.querySelector("#rob01").addEventListener("click", () => game._tiles[0].toggleRobber("#rob01"))
