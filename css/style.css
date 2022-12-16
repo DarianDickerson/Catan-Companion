@@ -185,7 +185,7 @@ h3{
   bottom: 465px;
 }
 
-button.shiftUp, button.shiftDown{
+img.shiftUp, img.shiftDown{
   border-radius: 50%;
   margin: 0 17.5px;
   width: 40px;
@@ -195,7 +195,7 @@ button.shiftUp, button.shiftDown{
   border: none;
 }
 
-button.shiftUp:hover, button.shiftDown:hover{
+img.shiftUp:hover, img.shiftDown:hover{
   border: solid 1px black;
 }
 
@@ -241,6 +241,12 @@ button.shiftUp:hover, button.shiftDown:hover{
   justify-content: center;
   margin: 0;
   padding: 0;
+}
+
+.settType, .settColor{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 #place button, #place img{
