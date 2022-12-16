@@ -115,7 +115,10 @@ class Board{
     //TODO:
     //PLace Settlement
     placeSettlement(settleID){
-        document.getElementById(settleID).style.background = "red"
+        document.getElementById(settleID).style.background = "radial-gradient(lightskyblue, #5b7cb0,#183d8c)"
+        document.getElementById(settleID).style.border = "solid 3px #08214a"
+        document.getElementById(settleID).src = "images/city.png"
+        
     }
 
     //Toggle visibility of Stats section
@@ -585,7 +588,7 @@ document.querySelector("#rob29").addEventListener("click", () => game._tiles[0].
 
 //Event Listeners for Settlement placement
 //Row0
-document.getElementById("d-nh-00-nh").addEventListener("click", () => game.placeSettlement("d-nh-00-nh")) 	
+document.getElementById("d:nh:00:nh").addEventListener("click", () => game.placeSettlement("d:nh:00:nh")) 	
 document.getElementById("u:nh:nh:00").addEventListener("click", () => game.placeSettlement("u:nh:nh:00"))
 document.getElementById("d:nh:01:00").addEventListener("click", () => game.placeSettlement("d:nh:01:00"))					
 document.getElementById("u:nh:nh:01").addEventListener("click", () => game.placeSettlement("u:nh:nh:01"))				
