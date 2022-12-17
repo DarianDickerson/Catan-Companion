@@ -1,9 +1,12 @@
 //Board Class
 class Board{
     constructor(){
-        this._order = []    //Holds player objects in their turn order        
-        this._tiles = []    //Holds the board tile objects
-        this._turn = 0      //Tracks the game turn 
+        this._turn = 0          //Tracks the game turn 
+        this._selectPlace = ""  //ID of currently highlighted settlement Place
+        this._selectType = ""   //ID of currently highlighted settlement Type
+        this._selectColor = ""  //ID of currently highlighted settlement Color
+        this._order = []        //Holds player objects in their turn order        
+        this._tiles = []        //Holds the board tile objects
         this._resourceImg = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)",  
             "url(images/pieceWool.jpg)","url(images/pieceWheat.jpg)",
             "url(images/pieceOre.jpg)","url(images/pieceDesert.png)"]       //Array of images for tile backgrounds
@@ -112,13 +115,83 @@ class Board{
         })
     }
 
-    //TODO:
-    //PLace Settlement
+    
+    //Select Settlement PLacement
     placeSettlement(settleID){
-        document.getElementById(settleID).style.background = "radial-gradient(lightskyblue, #5b7cb0,#183d8c)"
-        document.getElementById(settleID).style.border = "solid 3px #08214a"
-        document.getElementById(settleID).src = "images/city.png"
+        document.getElementById(settleID).style.border = "solid 5px gold"   //Highlight current selected settlement place
+        document.querySelector("#place").style.display = "flex"             //Reveal Settlement selection element
+
+        if(this._selectPlace != ""){                                       //Unhighlight previous place if still highlighted                 
+            document.getElementById(this._selectPlace).style.border = ""   //Removes highlighted border
+        }
         
+        this._selectPlace = settleID       //Set current place as selected place
+    }
+
+    //Select Settlement Type
+    settlementType(type){
+        document.getElementById(type).style.border = "solid 5px gold"     //Highlight current selected settlement type
+
+        if(this._selectType != ""){                                       //Unhighlight previous type if still highlighted                 
+            document.getElementById(this._selectType).style.border = ""   //Removes highlighted border
+        }
+
+        this._selectType = type       //Set current type as selected type
+    }
+
+    //Select Settlement Color
+    settlementColor(color){
+        document.getElementById(color).style.border = "solid 5px gold"     //Highlight current selected settlement color
+
+        if(this._selectColor != ""){                                       //Unhighlight previous color if still highlighted                 
+            document.getElementById(this._selectColor).style.border = ""   //Removes highlighted border
+        }
+
+        this._selectColor = color       //Set current color as selected color
+    }
+
+    //Sebmit the settlement to be placed
+    submitSettlement(){
+        switch(this._selectColor){
+            case "settBlue":
+                document.getElementById(this._selectPlace).style.background = "radial-gradient(lightskyblue, #5b7cb0,#183d8c)"
+                document.getElementById(this._selectPlace).style.border = "solid 3px #08214a"
+                break
+            case "settGreen":
+                document.getElementById(this._selectPlace).style.background = "radial-gradient(lightgreen, #418f3f, #095705)"
+                document.getElementById(this._selectPlace).style.border = "solid 3px #022e01"
+                break
+            case "settRed":
+                document.getElementById(this._selectPlace).style.background = "radial-gradient(#f28d91,#f55860,#70080d)"
+                document.getElementById(this._selectPlace).style.border = "solid 3px #4d0206"
+                break
+            case "settOrange":
+                document.getElementById(this._selectPlace).style.background = "radial-gradient(#fa9070,#fa693e,#8c2c08)"
+                document.getElementById(this._selectPlace).style.border = "solid 3px #751c01"
+                break
+            case "settWhite":
+                document.getElementById(this._selectPlace).style.background = "radial-gradient(white,#edebeb, #b8b9ba)"
+                document.getElementById(this._selectPlace).style.border = "solid 3px gray"
+                break
+            case "settBrown":
+                document.getElementById(this._selectPlace).style.background = "radial-gradient(tan,#947769,#3b190c)"
+                document.getElementById(this._selectPlace).style.border = "solid 3px #26130a"
+                break
+        }
+        document.getElementById(this._selectPlace).src = `images/${this._selectType}.png`
+
+        //TODO: Set Color/Settlement to Adjacent Hex Tile
+
+        //Hide Settlement Selection Menu
+        document.querySelector("#place").style.display = "none"
+
+        //Reset Values
+        //document.getElementById(this._selectPlace).style.border = ""
+        this._selectPlace = ""
+        document.getElementById(this._selectType).style.border = ""
+        this._selectType = ""
+        document.getElementById(this._selectColor).style.border = ""
+        this._selectColor = ""
     }
 
     //Toggle visibility of Stats section
@@ -675,3 +748,18 @@ document.getElementById("d:28:nh:nh").addEventListener("click", () => game.place
 document.getElementById("u:28:29:nh").addEventListener("click", () => game.placeSettlement("u:28:29:nh"))						
 document.getElementById("d:29:nh:nh").addEventListener("click", () => game.placeSettlement("d:29:nh:nh"))	
 document.getElementById("u:29:nh:nh").addEventListener("click", () => game.placeSettlement("u:29:nh:nh"))
+
+//Event Listeners for ssettlement type selection
+//Settlement Type
+document.querySelector("#settlement").addEventListener("click", () => game.settlementType("settlement"))
+document.querySelector("#city").addEventListener("click", () => game.settlementType("city"))
+//Settlement Color
+document.querySelector("#settBlue").addEventListener("click", () => game.settlementColor("settBlue"))
+document.querySelector("#settGreen").addEventListener("click", () => game.settlementColor("settGreen"))
+document.querySelector("#settRed").addEventListener("click", () => game.settlementColor("settRed"))
+document.querySelector("#settOrange").addEventListener("click", () => game.settlementColor("settOrange"))
+document.querySelector("#settWhite").addEventListener("click", () => game.settlementColor("settWhite"))
+document.querySelector("#settBrown").addEventListener("click", () => game.settlementColor("settBrown"))
+
+//Submit Settlment 
+document.querySelector("#submitSettle").addEventListener("click", () => game.submitSettlement())
