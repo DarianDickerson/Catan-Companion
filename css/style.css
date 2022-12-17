@@ -110,7 +110,7 @@ h3{
 }
 
 #board aside{
-  border: 2px solid red;
+  
 }
 
 #board h2{
@@ -196,7 +196,7 @@ img.shiftUp, img.shiftDown{
 }
 
 img.shiftUp:hover, img.shiftDown:hover{
-  border: solid 1px black;
+  border: solid 2px black;
 }
 
 .shiftUp{
@@ -236,7 +236,7 @@ img.shiftUp:hover, img.shiftDown:hover{
 
 /*Aside Settlement Placer*/
 #place{
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   margin: 0;
@@ -294,11 +294,11 @@ img.shiftUp:hover, img.shiftDown:hover{
 }
 .trackBrown, .orderContBrown, #settBrown{
   border: solid 10px #26130a;
-  background:radial-gradient(tan,#947769,#3b190c)
+  background:radial-gradient(tan,#947769,#3b190c);
 }
 .trackWhite, .orderContWhite, #settWhite{
   border: solid 10px gray;
-  background: radial-gradient(white,#edebeb, #b8b9ba)
+  background: radial-gradient(white,#edebeb, #b8b9ba);
 }
 .trackOrange, .orderContOrange, #settOrange{
   border: solid 10px #751c01;
