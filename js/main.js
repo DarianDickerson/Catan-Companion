@@ -150,47 +150,85 @@ class Board{
         this._selectColor = color       //Set current color as selected color
     }
 
-    //Sebmit the settlement to be placed
-    submitSettlement(){
-        switch(this._selectColor){
-            case "settBlue":
-                document.getElementById(this._selectPlace).style.background = "radial-gradient(lightskyblue, #5b7cb0,#183d8c)"
-                document.getElementById(this._selectPlace).style.border = "solid 3px #08214a"
-                break
-            case "settGreen":
-                document.getElementById(this._selectPlace).style.background = "radial-gradient(lightgreen, #418f3f, #095705)"
-                document.getElementById(this._selectPlace).style.border = "solid 3px #022e01"
-                break
-            case "settRed":
-                document.getElementById(this._selectPlace).style.background = "radial-gradient(#f28d91,#f55860,#70080d)"
-                document.getElementById(this._selectPlace).style.border = "solid 3px #4d0206"
-                break
-            case "settOrange":
-                document.getElementById(this._selectPlace).style.background = "radial-gradient(#fa9070,#fa693e,#8c2c08)"
-                document.getElementById(this._selectPlace).style.border = "solid 3px #751c01"
-                break
-            case "settWhite":
-                document.getElementById(this._selectPlace).style.background = "radial-gradient(white,#edebeb, #b8b9ba)"
-                document.getElementById(this._selectPlace).style.border = "solid 3px gray"
-                break
-            case "settBrown":
-                document.getElementById(this._selectPlace).style.background = "radial-gradient(tan,#947769,#3b190c)"
-                document.getElementById(this._selectPlace).style.border = "solid 3px #26130a"
-                break
+    //Submit the settlement to be placed
+    submitSettlement(){ 
+        this.deleteSettlement(false)    //Delete previous settlement in the place
+
+        //All Options are filled
+        if(this._selectColor != "" && this._selectPlace != "" && this._selectType != ""){ 
+            switch(this._selectColor){
+                case "settBlue":
+                    document.getElementById(this._selectPlace).style.background = "radial-gradient(lightskyblue, #5b7cb0,#183d8c)"
+                    //document.getElementById(this._selectPlace).style.border = "solid 3px #08214a"
+                    break
+                case "settGreen":
+                    document.getElementById(this._selectPlace).style.background = "radial-gradient(lightgreen, #418f3f, #095705)"
+                    //document.getElementById(this._selectPlace).style.border = "solid 3px #022e01"
+                    break
+                case "settRed":
+                    document.getElementById(this._selectPlace).style.background = "radial-gradient(#f28d91,#f55860,#70080d)"
+                    //document.getElementById(this._selectPlace).style.border = "solid 3px #4d0206"
+                    break
+                case "settOrange":
+                    document.getElementById(this._selectPlace).style.background = "radial-gradient(#fa9070,#fa693e,#8c2c08)"
+                    //document.getElementById(this._selectPlace).style.border = "solid 3px #751c01"
+                    break
+                case "settWhite":
+                    document.getElementById(this._selectPlace).style.background = "radial-gradient(white,#edebeb, #b8b9ba)"
+                    //document.getElementById(this._selectPlace).style.border = "solid 3px gray"
+                    break
+                case "settBrown":
+                    document.getElementById(this._selectPlace).style.background = "radial-gradient(tan,#947769,#3b190c)"
+                    //document.getElementById(this._selectPlace).style.border = "solid 3px #26130a"
+                    break
+            }
+            document.getElementById(this._selectPlace).src = `images/${this._selectType}.png` //Add image of settlement type to the place
+
+            //Add Color/Settlement to Adjacent Hex Tiles
+            //Split the placeID into just the _tile indexes
+            let hexes =  this._selectPlace.split(":").filter(h => Number.isInteger(+h)) 
+            //Add to each adjacent hex: place,color,type 
+            hexes.forEach(h => game._tiles[+h]._settlements.push(this._selectPlace + "," + this._selectColor.substr(4) + "," + this._selectType))
+
+            this.resetSettlementValues()
         }
-        document.getElementById(this._selectPlace).src = `images/${this._selectType}.png`
+        else{
+            throw 'Settlement color, type, and/or place empty'
+        }
+    }
 
-        //TODO: Set Color/Settlement to Adjacent Hex Tile
+    //Delete Settlement
+    deleteSettlement(clear=true){
+        if(this._selectPlace != ""){
+            let hexes = this._selectPlace.split(":").filter(h => Number.isInteger(+h))
+            hexes.forEach(h => {                                                                            //_settlements stores: "place,color,type"
+                let i = game._tiles[+h]._settlements.findIndex(s => s.split(",")[0] === this._selectPlace)  //Index of settlement
+                if(i >= 0){                                                                                 //If Settlement is found
+                    game._tiles[+h]._settlements.splice(i,1)                                                //Delete Settlement from hex 
+                }
+            })
 
-        //Hide Settlement Selection Menu
-        document.querySelector("#place").style.display = "none"
+            //Clear Place visuals
+            document.getElementById(this._selectPlace).style.background = ""
+            document.getElementById(this._selectPlace).src = "images/blank.png"
+        }
 
+        if(clear) this.resetSettlementValues()  //Clear values if not submitting a new settlement
+
+        document.querySelector("#place").style.display = "none" //Hide Settlement Selection Menu
+    }
+
+    //Reset Settlement Selection
+    resetSettlementValues(){
         //Reset Values
-        //document.getElementById(this._selectPlace).style.border = ""
+        //Place
+        if(this._selectPlace != "") document.getElementById(this._selectPlace).style.border = ""
         this._selectPlace = ""
-        document.getElementById(this._selectType).style.border = ""
+        //Type
+        if(this._selectType != "") document.getElementById(this._selectType).style.border = ""
         this._selectType = ""
-        document.getElementById(this._selectColor).style.border = ""
+        //Color
+        if(this._selectColor != "") document.getElementById(this._selectColor).style.border = ""
         this._selectColor = ""
     }
 
@@ -423,14 +461,12 @@ class TradeCards{
             //Add to Trade Array of Player
             let i = game._order.findIndex(col => col._color === colRes[1])  //Find the index of the player in the player array
             game._order[i]._trades[resource.indexOf(colRes[2])] += +num     //Update player trade array
-            //TODO: Update Final Stats to DOM
         })
 
         //Increase trade counter for colors
         this.colorTrades.forEach(t =>{
             let i = game._order.findIndex(col => col._color === t)
             game._order[i]._tradeCount += 1
-            //TODO: Update Final Stats to DOM
         })
         
         this.colorTrades.clear()
@@ -763,3 +799,5 @@ document.querySelector("#settBrown").addEventListener("click", () => game.settle
 
 //Submit Settlment 
 document.querySelector("#submitSettle").addEventListener("click", () => game.submitSettlement())
+//Delete Settlement
+document.querySelector("#deleteSettle").addEventListener("click", () => game.deleteSettlement())
