@@ -52,18 +52,19 @@ class Board{
     updateTile(hexID, i){
         //Update the DOM
         document.querySelector(hexID).style.background = this._resourceImg[i]
-        document.querySelector(hexID).style.backgroundPosition = "inherit"
+        document.querySelector(hexID).style.backgroundPosition = "inherit"  //TODO: Anything better than inherit? Might be causing problems
         document.querySelector(hexID).style.backgroundSize ="cover"
         //Update the Hex Object
         this._tiles[+hexID.slice(-2)].resource = this._resourceImg[i]
+        this._tiles[+hexID.slice(-2)]._resourceNum = i                              //Set the tile resourceNumber to the new index
     }
 
     //Change the resource of the hex tile
-    changeTile(hexID){
-        //Get current resource the tile is on and increase the index by 1   
-        let i = this._resourceImg.indexOf(this._tiles[+hexID.slice(-2)].resource)
-        i === this._resourceImg.length -1 ? i=0 : i++
-        this.updateTile(hexID, i)
+    //Get current resource the tile is on and increase the index by 1  
+    changeTile(hexID){  
+        let i = this._resourceImg.indexOf(this._tiles[+hexID.slice(-2)].resource)   //Find current index of resource
+        i === this._resourceImg.length -1 ? i=0 : i++                               //Increase the index by 1
+        this.updateTile(hexID, i)                                                   //Update the tile on the DOM
     }
 
     //Randomizes each hex individually
@@ -279,6 +280,7 @@ class Hex{
     constructor(id){
         this._id = id
         this._num = 1
+        this._resourceNum = 5
         this._robber = false
         this._settlements = []
         this.resource = "url(images/pieceDesert.png)"
@@ -326,6 +328,7 @@ class Player{
     constructor(color){
         this._color = color
         this._tradeCount = 0
+        this._robbed = 0
         
         //0:Wood, 1:Brick, 2:Wool, 3:Wheat, 4:Ore
         //Resources Collected
@@ -372,6 +375,30 @@ class DiceTrack{
         this.numsButtons(this._dice1 + this._dice2 - 2)
     } 
     
+    distributeCards(roll){
+        if((game._order.length > 0) && (roll != 7)){
+            let size = game._order.length > 4 ? 19 : 29 //ID of last tile on the board, big or small
+
+            for(let i=0; i<=size; i++){             //Cycle through each Tile on the playable board
+                let hex = game._tiles[i]            //Address to Current Hex Tile
+                if(hex._num === roll){              //Check if the Hex Number matches the number Rolled
+                    if(hex._settlements.length > 0 && hex._resourceNum != 5){       //Checks if there are settlements on the Hex & Hex is not a Desert
+                        hex._settlements.forEach(s =>{                              //Cycle through all settlements on the Hex
+                            let sett = s.split(",")                                 //_settlements stores: "place,color,type"
+                            let player = game._order[game._order.findIndex(p => p._color === sett[1])]  //Address of the current Player
+                            if(hex._robber){                                        //Robber is on the Hex
+                                player._robbed += sett[2] === "settlement" ? 1 : 2  //Increase Player Robbed count by 1or2 depending on Settlement/City
+                            }
+                            else{                                                                   //0:Wood, 1:Brick, 2:Wool, 3:Wheat, 4:Ore, 5:Desert
+                                player._cards[hex._resourceNum] += sett[2] === "settlement" ? 1 : 2 //Increase specific Player Resource count by 1or2 depending on Settlement/City
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
+
     //Increases the counter on the dice roll passed in
     numsButtons(index){
         //Increase specific number total count
@@ -385,6 +412,9 @@ class DiceTrack{
 
             //Increase number of turns passed
             game._turn += 1
+
+            //Give players cards according to the number rolled
+            this.distributeCards(index + 2)
         }
     }
 
