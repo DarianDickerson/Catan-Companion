@@ -138,10 +138,11 @@ h3{
   background-position: center;
 }
 
-#board div div button{
+#board div div button, img.robberButton{
   height:40px;
   width: 40px;
   border-radius: 50%;
+  border: solid 2px black;
 }
 
 #board section{
@@ -216,7 +217,7 @@ img.shiftUp:hover, img.shiftDown:hover{
 /*TODO: Dont know if I want to keep this*/
 /*Attemped fix for layering clickable elements in the board*/
 .robberButton, .numsButton{
-  
+  background: rgba(255,255,255,.65)
 }
 
 .numsButton{
@@ -228,10 +229,11 @@ img.shiftUp:hover, img.shiftDown:hover{
 
   /*Robber Button*/
 .robberButton{
-  background: rgba(0,0,0,0);
+  background: rgba(255,255,255,.65);
   background-position: center;
   background-repeat: none;
   background-size: cover; 
+
 }
 
 /*Aside Settlement Placer*/
@@ -337,6 +339,12 @@ table{
 
 td, th{
   padding: 5px;
+}
+
+table h3{
+  padding: 5px;
+  background: rgba(0,0,0,.5);
+  font-size: 40px;
 }
 
 tr{
