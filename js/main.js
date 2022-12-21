@@ -5,6 +5,7 @@ class Board{
         this._selectPlace = ""  //ID of currently highlighted settlement Place
         this._selectType = ""   //ID of currently highlighted settlement Type
         this._selectColor = ""  //ID of currently highlighted settlement Color
+        this._robberPlace = ""  //ID of robber location
         this._order = []        //Holds player objects in their turn order        
         this._tiles = []        //Holds the board tile objects
         this._resourceImg = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)",  
@@ -240,6 +241,24 @@ class Board{
         }else{
             document.querySelector("#reveal").style.display = "flex"
         }
+
+        this.updateStats()
+    }
+
+    updateStats(){
+        let resources = ["Wood","Brick","Wool","Wheat", "Ore"]
+        this._order.forEach(player=>{
+            //Fill in Individual Resources
+            player._cards.forEach((c,i)=>{
+                document.querySelector(`#count${player._color}${resources[i]}`).innerText = player._cards[i]
+            })
+
+            //Fill in Total Resources
+            document.querySelector(`#count${player._color}Total`).innerText = player._cards.reduce((a,c)=> a+c,0)
+        
+            //Fill in Robber
+            document.querySelector(`#count${player._color}Robber`).innerText = player._robbed
+        })
     }
 
     //Clear all game values
@@ -307,18 +326,18 @@ class Hex{
     }
 
     //Toggle the robber on the hew piece
-    toggleRobber(hexID){
-        let i = +hexID.substr(4)
-        game._tiles[i]._robber = !game._tiles[i]._robber
+    toggleRobber(hexID, last=true){
+        let i = +hexID.substr(4)                            //Grabs hex index from hexID
+        game._tiles[i]._robber = !game._tiles[i]._robber    //Toggles the robber value (true/false)
         
-        if(game._tiles[i]._robber){
-            document.querySelector(hexID).style.background = "url(images/robber.png)"
-            document.querySelector(hexID).style.backgroundPosition = "center"
-            document.querySelector(hexID).style.backgroundRepeat = "none"
-            document.querySelector(hexID).style.backgroundSize = "cover" 
-        }
-        else{
-            document.querySelector(hexID).style.background = "rgba(0,0,0,0)"
+        if(game._tiles[i]._robber) document.querySelector(hexID).src = "images/robber.png"  //Chages hex img to the robber
+        else document.querySelector(hexID).src = "images/blank.png"                         //Changes hex img to blank
+
+        if(game._robberPlace === "") game._robberPlace = hexID      //No previous robber selection or same robber selection twice
+        else if(game._robberPlace === hexID) game._robberPlace = "" //Resets robber selection if same selection as last
+        else if(last){                                              //Last: New location is selected and needs previous location toggled off
+            this.toggleRobber(game._robberPlace, false)             //Toggles previous robber location 
+            game._robberPlace = hexID                               //Set current location of the robber
         }
     }
 }
