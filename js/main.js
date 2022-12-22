@@ -189,8 +189,13 @@ class Board{
             //Add Color/Settlement to Adjacent Hex Tiles
             //Split the placeID into just the _tile indexes
             let hexes =  this._selectPlace.split(":").filter(h => Number.isInteger(+h)) 
+            
             //Add to each adjacent hex: place,color,type 
             hexes.forEach(h => game._tiles[+h]._settlements.push(this._selectPlace + "," + this._selectColor.substr(4) + "," + this._selectType))
+
+            //Add to Player settlement total
+            let i = game._order.findIndex(p => p._color === this._selectColor.substr(4))
+            game._order[i]._settlements += this._selectType === "settlement" ? 1 : 2
 
             this.resetSettlementValues()
         }
@@ -202,13 +207,21 @@ class Board{
     //Delete Settlement
     deleteSettlement(clear=true){
         if(this._selectPlace != ""){
+            let color = "", type = ""
             let hexes = this._selectPlace.split(":").filter(h => Number.isInteger(+h))
             hexes.forEach(h => {                                                                            //_settlements stores: "place,color,type"
                 let i = game._tiles[+h]._settlements.findIndex(s => s.split(",")[0] === this._selectPlace)  //Index of settlement
                 if(i >= 0){                                                                                 //If Settlement is found
+                    color = game._tiles[+h]._settlements[i].split(",")[1]                                   //Player Color to remove settlement from
+                    type = game._tiles[+h]._settlements[i].split(",")[2]                                    //Settlement type to remove 1 or 2 points 
                     game._tiles[+h]._settlements.splice(i,1)                                                //Delete Settlement from hex 
                 }
             })
+
+            if(type != "" && color != ""){                              //There was a previous settlement in the place
+                let i = game._order.findIndex(p => p._color === color)  //Index of player
+                game._order[i]._settlements -= type === "settlement" ? 1 : 2
+            }
 
             //Clear Place visuals
             document.getElementById(this._selectPlace).style.background = ""
@@ -346,6 +359,7 @@ class Hex{
 class Player{
     constructor(color){
         this._color = color
+        this._settlements = 0
         this._tradeCount = 0
         this._robbed = 0
         
@@ -396,7 +410,7 @@ class DiceTrack{
     
     distributeCards(roll){
         if((game._order.length > 0) && (roll != 7)){
-            let size = game._order.length > 4 ? 19 : 29 //ID of last tile on the board, big or small
+            let size = game._order.length > 4 ? 29 : 21 //Index of last tile on the board, big or small
 
             for(let i=0; i<=size; i++){             //Cycle through each Tile on the playable board
                 let hex = game._tiles[i]            //Address to Current Hex Tile
