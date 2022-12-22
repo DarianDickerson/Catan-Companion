@@ -16,6 +16,9 @@
 		<!-- external CSS link -->
 		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="css/style.css">
+
+		<!--Access to Charts.css-->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
 	</head>
 	<body>
 		<header>
@@ -594,6 +597,24 @@
 					<td id="countBrownRobber">0</td>
 				</tr>	
 			</table>
+
+			<!--Settlement Bar Graph-->
+			<table class="charts-css line multiple" id="my-chart">
+				<h3>Settlements</h3>
+				<tbody id="settleGraph">
+					
+					<!--
+					<tr>
+						<td style="--start: 0.0; --size: 0.4"></td>
+						<td style="--start: 0.0; --size: 0.6"></td>
+				  	</tr>
+				  	<tr><td style="--start: 0.4; --size: 0.2"></td></tr>
+					-->
+				</tbody>
+			 </table>
+			
+			  
+
 			<button id="clearGame">Clear Game</button>
 		</section>
 
