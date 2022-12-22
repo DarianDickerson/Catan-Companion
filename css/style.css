@@ -443,6 +443,12 @@ a{
   font-weight: 700;
 }
 
+#my-chart.line{
+  height: 200px;
+  max-width: 100%;
+  margin: 0 auto;
+  background: rgba(0,0,0,.5);
+}
 /******************************************
 /* ADDITIONAL STYLES
 /*******************************************/
