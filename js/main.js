@@ -16,6 +16,7 @@ class Board{
         this.createBoard()     //Fills this._tiles with Hex objects for each piece of the board
         this._dice = new DiceTrack()
         this._trade = new TradeCards()
+        this._results = new Stats()
     }
     
     //Create Main Board of Hex Tiles
@@ -247,33 +248,6 @@ class Board{
         this._selectColor = ""
     }
 
-    //Toggle visibility of Stats section
-    showStats(){
-        if(document.querySelector("#reveal").style.display === "flex"){
-            document.querySelector("#reveal").style.display = "none"
-        }else{
-            document.querySelector("#reveal").style.display = "flex"
-        }
-
-        this.updateStats()
-    }
-
-    updateStats(){
-        let resources = ["Wood","Brick","Wool","Wheat", "Ore"]
-        this._order.forEach(player=>{
-            //Fill in Individual Resources
-            player._cards.forEach((c,i)=>{
-                document.querySelector(`#count${player._color}${resources[i]}`).innerText = player._cards[i]
-            })
-
-            //Fill in Total Resources
-            document.querySelector(`#count${player._color}Total`).innerText = player._cards.reduce((a,c)=> a+c,0)
-        
-            //Fill in Robber
-            document.querySelector(`#count${player._color}Robber`).innerText = player._robbed
-        })
-    }
-
     //Clear all game values
     clearGame(){
         const color = ["Blue","Green","Red","Orange","White","Brown"]
@@ -307,6 +281,15 @@ class Board{
         this._dice.clearDice()
     }
 }
+
+
+
+
+
+
+
+
+
 
 class Hex{
     constructor(id){
@@ -355,6 +338,15 @@ class Hex{
     }
 }
 
+
+
+
+
+
+
+
+
+
 //Player Class
 class Player{
     constructor(color){
@@ -373,6 +365,16 @@ class Player{
     }
 
 }
+
+
+
+
+
+
+
+
+
+
 
 //Dice Class
 class DiceTrack{
@@ -446,6 +448,11 @@ class DiceTrack{
             //Increase number of turns passed
             game._turn += 1
 
+            //Add settlement Data points to settlement points graph the first roll & after each round
+            if(game._turn % game._order.length === 0 || game._results._settleData.length === 0){
+                game._results.addSettlementData()
+            }
+
             //Give players cards according to the number rolled
             this.distributeCards(index + 2)
         }
@@ -480,12 +487,22 @@ class DiceTrack{
             this._totalRolls[i] = 0
             document.querySelector(`#span${i+2}`).innerText = "0"
         })
-        this.updateGraph()
+
+        game._results.updateGraph()
 
         //Clear individual colors' dice counts
         game._order.forEach(p => p._playerRolls.forEach((r,i) => p._playerRolls[i] = 0))
     }
 }
+
+
+
+
+
+
+
+
+
 
 class TradeCards{
     constructor(){
@@ -545,8 +562,89 @@ class TradeCards{
     }
 }
 
+
+
+
+
+
+
+
+
+
+class Stats{
+    constructor(){
+        this._settleData = []
+        this._cardsData = []
+    }
+
+    //Toggle visibility of Stats section
+    showStats(){
+        if(document.querySelector("#reveal").style.display === "flex"){
+            document.querySelector("#reveal").style.display = "none"
+        }else{
+            document.querySelector("#reveal").style.display = "flex"
+        }
+
+        this.updateStats()
+    }
+
+    addSettlementData(){
+        let points = ""                                                         //Hold all players' points this section: "p1,p2,p3..."
+        game._order.forEach((player,i) =>{                                      //For each player in the game a separate data line
+            points += i === 0 ? player._settlements : "," + player._settlements //# of settlements for player added to section of data points
+        })
+
+        this._settleData.push(points)   //Add to array of data points
+    }
+
+    /*  Needs tweeking
+    game._order.forEach(p =>{
+            const dataPoint = document.createElement("td")
+            dataPoint.style = `--start: ${}; --size: ${}}`
+            dataPoint.style.color = p._color
+
+            const element = document.getElementById("div1");
+            element.appendChild(para);
+        })
+    */
+
+    updateStats(){
+        let resources = ["Wood","Brick","Wool","Wheat", "Ore"]
+        game._order.forEach(player=>{
+            //Fill in Individual Resources
+            player._cards.forEach((c,i)=>{
+                document.querySelector(`#count${player._color}${resources[i]}`).innerText = player._cards[i]
+            })
+
+            //Fill in Total Resources
+            document.querySelector(`#count${player._color}Total`).innerText = player._cards.reduce((a,c)=> a+c,0)
+        
+            //Fill in Robber
+            document.querySelector(`#count${player._color}Robber`).innerText = player._robbed
+        })
+    }
+}
+
+
+
+
+
+
+
+
+
+
 const game = new Board()
 game.legalRandom()
+
+
+
+
+
+
+
+
+
 
 //Event Listeners for Player Select
 document.querySelector("#orderBlue").addEventListener("click",() => game.createPlayerOrder("Blue"))
@@ -557,7 +655,7 @@ document.querySelector("#orderWhite").addEventListener("click",() => game.create
 document.querySelector("#orderBrown").addEventListener("click",() => game.createPlayerOrder("Brown"))
 
 //Event Listener to Toggle visibility of stat section
-document.querySelector("#showStats").addEventListener("click", () => game.showStats())
+document.querySelector("#showStats").addEventListener("click", () => game._results.showStats())
 //Event Listener in Player Select to Clear Game 
 document.querySelector("#playerClear").addEventListener("click", () => game.clearGame())
 //Event Listener in Stats to Clear Game
