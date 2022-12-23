@@ -196,7 +196,7 @@ class Board{
 
             //Add to Player settlement total
             let i = game._order.findIndex(p => p._color === this._selectColor.substr(4))
-            game._order[i]._settlements += this._selectType === "settlement" ? 1 : 2
+            game._order[i]._victoryPoints += this._selectType === "settlement" ? 1 : 2
 
             this.resetSettlementValues()
         }
@@ -221,7 +221,7 @@ class Board{
 
             if(type != "" && color != ""){                              //There was a previous settlement in the place
                 let i = game._order.findIndex(p => p._color === color)  //Index of player
-                game._order[i]._settlements -= type === "settlement" ? 1 : 2
+                game._order[i]._victoryPoints -= type === "settlement" ? 1 : 2
             }
 
             //Clear Place visuals
@@ -351,7 +351,7 @@ class Hex{
 class Player{
     constructor(color){
         this._color = color
-        this._settlements = 0
+        this._victoryPoints = 0
         this._tradeCount = 0
         this._robbed = 0
         
@@ -449,7 +449,7 @@ class DiceTrack{
             game._turn += 1
 
             //Add settlement Data points to settlement points graph the first roll & after each round
-            if(game._turn % game._order.length === 0 || game._results._settleData.length === 0){
+            if(game._turn % game._order.length === 0 || game._results._vpData.length === 0){
                 game._results.addSettlementData()
             }
 
@@ -573,8 +573,8 @@ class TradeCards{
 
 class Stats{
     constructor(){
-        this._settleData = []
-        this._cardsData = []
+        this._vpData = []       //Victory Points per round
+        this._cardsData = []    //Resource Cards per roll
     }
 
     //Toggle visibility of Stats section
@@ -586,17 +586,40 @@ class Stats{
         }
 
         this.updateStats()
+        this.addSettlementData()
+        this.graphVictoryPoints()
     }
 
     addSettlementData(){
-        let points = ""                                                         //Hold all players' points this section: "p1,p2,p3..."
-        game._order.forEach((player,i) =>{                                      //For each player in the game a separate data line
-            points += i === 0 ? player._settlements : "," + player._settlements //# of settlements for player added to section of data points
+        let points = ""                                                             //Hold all players' points this section: "p1,p2,p3..."
+        game._order.forEach((player,i) =>{                                          //For each player in the game a separate data line
+            points += i === 0 ? player._victoryPoints : "," + player._victoryPoints //# of settlements for player added to section of data points
         })
 
-        this._settleData.push(points)   //Add to array of data points
+        this._vpData.push(points)   //Add to array of data points
     }
 
+    graphVictoryPoints(){
+        //Max value of all data points. Used to ratio the rest of the points in the graph
+        let max = Math.max(...game._results._vpData[game._results._vpData.length-1].split(",").map(n=>+n)) +1
+
+        this._vpData.forEach((data,i) =>{           //Cycle through all data point groups 
+            let tableRow = document.createElement("tr") //Create Table Row element
+            game._order.forEach((player,j) =>{          //Line for each player
+                if(i != 0){                                                 //Skip starting data point
+                    let tableData = document.createElement("td")            //Create Table Data element
+                    let size = +data.split(",")[j] / max                    //Current data point
+                    let start = +this._vpData[i-1].split(",")[j] / max  //Previous data point
+
+                    //Points the line connects & color
+                    tableData.style = `--start: ${start}; --size: ${size}; --color: ${player._color};`   
+                    tableRow.appendChild(tableData) //Add line to the Table Row
+                }
+            })
+
+            document.getElementById("settleGraph").appendChild(tableRow)    //Add Table Row to the graph   
+        })
+    }
     /*  Needs tweeking
     game._order.forEach(p =>{
             const dataPoint = document.createElement("td")
