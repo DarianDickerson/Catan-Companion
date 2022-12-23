@@ -43,16 +43,12 @@ section{
 /******************************************
 /* LAYOUT
 /*******************************************/
-h1, h2, h3{
+h1, h2, h3, caption{
   color: white;
   text-shadow: 0.07em 0 black, 0 0.07em black, 0.07em 0 black, 0 -0.07em black;
   /*font-family: 'Parisienne', cursive;*/
   font-family: 'Playfair Display', serif;
   font-size: 50px;
-}
-
-h3{
-  font-size: 25px;
 }
 
 /*Player Select Section*/
@@ -341,10 +337,14 @@ td, th{
   padding: 5px;
 }
 
-table h3{
+h3, caption{
   padding: 5px;
   background: rgba(0,0,0,.5);
-  font-size: 40px;
+  font-size: 35px;
+  font-weight: bold;
+  width: 100%;
+  margin-bottom: 0px;
+  padding: 1%;
 }
 
 tr{
@@ -369,9 +369,12 @@ tr{
 .trBrown{
   background: rgba(213,175,126,.5);
 }
+#robberHead{
+  background: rgba(255,255,255,.5)
+}
 
 #my-chart.line{
-  height: 200px;
+  height: 300px;
   max-width: 100%;
   margin: 0 auto;
   background: rgba(0,0,0,.5);
