@@ -525,8 +525,16 @@
 		<!--Card Reveal-->
 		<section id="reveal">
 			<h2>Stats</h2>
+			
+			<!--Settlement Bar Graph-->
+			<table class="charts-css line multiple show-heading" id="my-chart">
+				<caption>Victory Points</caption>
+				<tbody id="settleGraph"></tbody>
+			 </table>
+			
+			 <!--Cards Collected-->
 			<table>
-				<h3>Cards Collected</h3>
+				<h3>Resource Cards Collected</h3>
 				<tr>
 					<th></th>
 					<th><img src="images/wood.jpg" alt="Wood"></th>
@@ -535,7 +543,7 @@
 					<th><img src="images/wheat.png" alt="Wheat"></th>
 					<th><img src="images/ore.png" alt="Ore"></th>
 					<th>Total</th>
-					<th><img src="images/robber.png" alt="Robber"></th>
+					<th><img src="images/robber.png" alt="Robber" id="robberHead"></th>
 				</tr>
 				<tr class="trBlue playerBlue">
 					<th>Blue</th>
@@ -598,23 +606,6 @@
 					<td id="countBrownRobber">0</td>
 				</tr>	
 			</table>
-
-			<!--Settlement Bar Graph-->
-			<table class="charts-css line multiple" id="my-chart">
-				<h3>Settlements</h3>
-				<tbody id="settleGraph">
-					
-					<!--
-					<tr>
-						<td style="--start: 0.0; --size: 0.4"></td>
-						<td style="--start: 0.0; --size: 0.6"></td>
-				  	</tr>
-				  	<tr><td style="--start: 0.4; --size: 0.2"></td></tr>
-					-->
-				</tbody>
-			 </table>
-			
-			  
 
 			<button id="clearGame">Clear Game</button>
 		</section>
