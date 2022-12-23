@@ -43,7 +43,7 @@ section{
 /******************************************
 /* LAYOUT
 /*******************************************/
-h1, h2, h3, caption{
+h1, h2, h3, h4, caption{
   color: white;
   text-shadow: 0.07em 0 black, 0 0.07em black, 0.07em 0 black, 0 -0.07em black;
   /*font-family: 'Parisienne', cursive;*/
@@ -70,39 +70,28 @@ h1, h2, h3, caption{
   height: 30px;
 }
 
-.playerBlue{
-  display: none;
-}
-.playerGreen{
-  display: none;
-}
-.playerRed{
-  display: none;
-}
-.playerOrange{
-  display: none;
-}
-.playerWhite{
-  display: none;
-}
-.playerBrown{
+.playerBlue, .playerGreen, .playerRed, .playerOrange, .playerWhite, .playerBrown{
   display: none;
 }
 
 /*Board Section*/
 #board{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   background: url(../images/ocean.jpg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  height: 900px;
+}
+
+#board *{
+  
 }
 
 .mainBoard{
-  
+  margin-bottom: -300px; /*Small Board -300px*/
+  /*Big Board -450px*/
 }
 
 #board aside{
@@ -110,7 +99,7 @@ h1, h2, h3, caption{
 }
 
 #board h2{
-  margin-top: 0;
+  margin-top: 10px;
 }
 
 #board div{
@@ -155,6 +144,7 @@ h1, h2, h3, caption{
 
 .rowHex2{
   position: relative;
+  margin-top: 0;
   bottom: 77.5px;
 }
 
@@ -237,6 +227,7 @@ img.shiftUp:hover, img.shiftDown:hover{
   display: none;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin: 0;
   padding: 0;
 }
@@ -247,10 +238,41 @@ img.shiftUp:hover, img.shiftDown:hover{
   justify-content: space-evenly;
 }
 
-#place button, #place img{
+.settType img{
+  background: rgb(230, 226, 171);
+}
+
+#place button, #place img, #armyRoad button{
   height:50px;
   width: 50px;
   border-radius: 50%;
+}
+
+#place button.settButt{
+  border-radius: 7px;
+  width: 70px;
+  height: 25px;
+  text-align: center;
+  margin:5px;
+}
+
+/*Longest Road Largest Army*/
+#armyRoad{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#armyRoad section{
+  display: flex;
+  flex-direction: column;
+  width:50%;
+}
+
+h4{
+  font-size: 25px;
+  font-weight: bold;
+  margin: 3px;
 }
 
 /*Trade Track Section*/
@@ -278,27 +300,27 @@ img.shiftUp:hover, img.shiftDown:hover{
   margin: 20px 0;
 }
 
-.trackBlue, .orderContBlue, #settBlue{
+.trackBlue, .orderContBlue, #settBlue, #roadBlue, #armyBlue{
   border: solid 10px #08214a;
   background:radial-gradient(lightskyblue, #5b7cb0,#183d8c);
 }
-.trackGreen, .orderContGreen, #settGreen{
+.trackGreen, .orderContGreen, #settGreen, #roadGreen, #armyGreen{
   border: solid 10px #022e01;
   background: radial-gradient(lightgreen, #418f3f, #095705);
 }
-.trackRed, .orderContRed, #settRed{
+.trackRed, .orderContRed, #settRed, #roadRed, #armyRed{
   border: solid 10px #4d0206;
   background:radial-gradient(#f28d91,#f55860,#70080d); 
 }
-.trackBrown, .orderContBrown, #settBrown{
+.trackBrown, .orderContBrown, #settBrown, #roadBrown, #armyBrown{
   border: solid 10px #26130a;
   background:radial-gradient(tan,#947769,#3b190c);
 }
-.trackWhite, .orderContWhite, #settWhite{
+.trackWhite, .orderContWhite, #settWhite, #roadWhite, #armyWhite{
   border: solid 10px gray;
   background: radial-gradient(white,#edebeb, #b8b9ba);
 }
-.trackOrange, .orderContOrange, #settOrange{
+.trackOrange, .orderContOrange, #settOrange, #roadOrange, #armyOrange{
   border: solid 10px #751c01;
   background: radial-gradient(#fa9070,#fa693e,#8c2c08);
 }
