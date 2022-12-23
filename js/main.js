@@ -6,6 +6,8 @@ class Board{
         this._selectType = ""   //ID of currently highlighted settlement Type
         this._selectColor = ""  //ID of currently highlighted settlement Color
         this._robberPlace = ""  //ID of robber location
+        this._army = ""
+        this._road = ""
         this._order = []        //Holds player objects in their turn order        
         this._tiles = []        //Holds the board tile objects
         this._resourceImg = ["url(images/pieceWood.jpg)","url(images/pieceBrick.jpg)",  
@@ -44,8 +46,8 @@ class Board{
             document.querySelector(`#order${color}`).innerText = this._order.length
             
             if(this._order.length === 5){
-                document.querySelectorAll(".bigBoard").forEach(h => {h.style.display = "flex"})
-                document.querySelector("#board").style.height = "1100px"
+                document.querySelectorAll(".bigBoard").forEach(h => h.style.display = "flex")
+                document.querySelector(".mainBoard").style.marginBottom = "-450px"
                 this.legalRandom()
             }
         }
@@ -246,6 +248,46 @@ class Board{
         //Color
         if(this._selectColor != "") document.getElementById(this._selectColor).style.border = ""
         this._selectColor = ""
+    }
+
+    //Select the Largest Army
+    chooseArmy(color){
+        let i = this._order.findIndex(player => player._color === color)//Finds index of player from the color
+        
+        if(this._army === color){                                       //Same color has already been selected
+            this._army = ""                                             //Set it so no Largest Army is selected
+            document.getElementById(`army${color}`).style.border = ""   //Deselect color on the DOM
+            this._order[i]._victoryPoints -= 2                          //Take away 2 Victory Points from player
+        }
+        else{                                                                   //New Color selected
+            if(this._army != ""){                                               //There was a previous Color selected
+                document.getElementById(`army${this._army}`).style.border = ""  //Deselect previous color on the DOM
+                this._order[this._order.findIndex(player => player._color === this._army)]._victoryPoints -= 2   //Take away 2 victory points from previous player
+            }
+            this._army = color                                                      //Set Largest Army to new color
+            this._order[i]._victoryPoints += 2                                      //Give player 2 victory points
+            document.getElementById(`army${color}`).style.border = "solid 5px gold" //Highlight current color on DOM
+        }
+    }
+
+    //Select the Longest Road
+    chooseRoad(color){
+        let i = this._order.findIndex(player => player._color === color)//Finds index of player from the color
+        
+        if(this._road === color){                                       //Same color has already been selected
+            this._road = ""                                             //Set it so no Longest Road is selected
+            document.getElementById(`road${color}`).style.border = ""   //Deselect color on the DOM
+            this._order[i]._victoryPoints -= 2                          //Take away 2 Victory Points from player
+        }
+        else{                                                                   //New Color selected
+            if(this._road != ""){                                               //There was a previous Color selected
+                document.getElementById(`road${this._road}`).style.border = ""  //Deselect previous color on the DOM
+                this._order[this._order.findIndex(player => player._color === this._road)]._victoryPoints -= 2   //Take away 2 victory points from previous player
+            }
+            this._road = color                                                      //Set Longest Road to new color
+            this._order[i]._victoryPoints += 2                                      //Give player 2 victory points
+            document.getElementById(`road${color}`).style.border = "solid 5px gold" //Highlight current color on DOM
+        }
     }
 
     //Clear all game values
@@ -586,7 +628,7 @@ class Stats{
         }
 
         this.updateStats()
-        this.addSettlementData()
+        if(game._turn % game._order.length != 0) this.addSettlementData()   //Add final data if data wasn't just added by the roll 
         this.graphVictoryPoints()
     }
 
@@ -603,33 +645,22 @@ class Stats{
         //Max value of all data points. Used to ratio the rest of the points in the graph
         let max = Math.max(...game._results._vpData[game._results._vpData.length-1].split(",").map(n=>+n)) +1
 
-        this._vpData.forEach((data,i) =>{           //Cycle through all data point groups 
-            let tableRow = document.createElement("tr") //Create Table Row element
-            game._order.forEach((player,j) =>{          //Line for each player
-                if(i != 0){                                                 //Skip starting data point
-                    let tableData = document.createElement("td")            //Create Table Data element
+        this._vpData.forEach((data,i) =>{   //Cycle through all data point groups 
+            if(i != 0){                     //Skip starting data point
+                let tableRow = document.createElement("tr") //Create Table Row element(holds all lines for this point)
+                game._order.forEach((player,j) =>{          //Line for each player
+                    let tableData = document.createElement("td")            //Create Table Data element(line)
                     let size = +data.split(",")[j] / max                    //Current data point
-                    let start = +this._vpData[i-1].split(",")[j] / max  //Previous data point
-
+                    let start = +this._vpData[i-1].split(",")[j] / max      //Previous data point
                     //Points the line connects & color
                     tableData.style = `--start: ${start}; --size: ${size}; --color: ${player._color};`   
                     tableRow.appendChild(tableData) //Add line to the Table Row
-                }
-            })
+                })
 
-            document.getElementById("settleGraph").appendChild(tableRow)    //Add Table Row to the graph   
+                document.getElementById("settleGraph").appendChild(tableRow)    //Add Table Row to the graph   
+            }
         })
     }
-    /*  Needs tweeking
-    game._order.forEach(p =>{
-            const dataPoint = document.createElement("td")
-            dataPoint.style = `--start: ${}; --size: ${}}`
-            dataPoint.style.color = p._color
-
-            const element = document.getElementById("div1");
-            element.appendChild(para);
-        })
-    */
 
     updateStats(){
         let resources = ["Wood","Brick","Wool","Wheat", "Ore"]
@@ -985,3 +1016,19 @@ document.querySelector("#settBrown").addEventListener("click", () => game.settle
 document.querySelector("#submitSettle").addEventListener("click", () => game.submitSettlement())
 //Delete Settlement
 document.querySelector("#deleteSettle").addEventListener("click", () => game.deleteSettlement())
+
+//Event listeners for Largest Army & Longest Road
+//Largest Army
+document.getElementById("armyBlue").addEventListener("click", () => game.chooseArmy("Blue"))
+document.getElementById("armyGreen").addEventListener("click", () => game.chooseArmy("Green"))						
+document.getElementById("armyRed").addEventListener("click", () => game.chooseArmy("Red"))	
+document.getElementById("armyOrange").addEventListener("click", () => game.chooseArmy("Orange"))						
+document.getElementById("armyWhite").addEventListener("click", () => game.chooseArmy("White"))	
+document.getElementById("armyBrown").addEventListener("click", () => game.chooseArmy("Brown"))
+//Longest Road
+document.getElementById("roadBlue").addEventListener("click", () => game.chooseRoad("Blue"))
+document.getElementById("roadGreen").addEventListener("click", () => game.chooseRoad("Green"))						
+document.getElementById("roadRed").addEventListener("click", () => game.chooseRoad("Red"))	
+document.getElementById("roadOrange").addEventListener("click", () => game.chooseRoad("Orange"))						
+document.getElementById("roadWhite").addEventListener("click", () => game.chooseRoad("White"))	
+document.getElementById("roadBrown").addEventListener("click", () => game.chooseRoad("Brown"))
