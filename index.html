@@ -59,8 +59,9 @@
 
 		<!--Board-->
 		<section id="board">
+			<h2>Board</h2>
+			<section>
 			<aside class="mainBoard">
-				<h2>Board</h2>
 				<div id="topBoard"></div>
 				<section class="rowHex0">
 					<img src="images/blank.png" alt="blank" id="d:nh:00:nh" class="shiftDown">			
@@ -232,9 +233,38 @@
 					<button id="settWhite" class="playerWhite"></button>
 					<button id="settBrown" class="playerBrown"></button>
 				</div>
-				<button id="submitSettle">Submit</button>
-				<button id="deleteSettle">Delete</button>
+				<button id="submitSettle" class="settButt">Submit</button>
+				<button id="deleteSettle" class="settButt">Delete</button>
 			</aside>
+			</section>
+			
+			<!--Longest Road & Largest Army-->
+			<section id="armyRoad">
+				<!--Longest Road-->
+				<section>
+					<h4>Longest Road</h4>
+					<div>
+						<button id="roadBlue" class="playerBlue"></button>
+						<button id="roadGreen" class="playerGreen"></button>
+						<button id="roadRed" class="playerRed"></button>
+						<button id="roadOrange" class="playerOrange"></button>
+						<button id="roadWhite" class="playerWhite"></button>
+						<button id="roadBrown" class="playerBrown"></button>
+					</div>
+				</section>
+				<!--Largest Army-->
+				<section>
+					<h4>Largest Army</h4>
+					<div>
+						<button id="armyBlue" class="playerBlue"></button>
+						<button id="armyGreen" class="playerGreen"></button>
+						<button id="armyRed" class="playerRed"></button>
+						<button id="armyOrange" class="playerOrange"></button>
+						<button id="armyWhite" class="playerWhite"></button>
+						<button id="armyBrown" class="playerBrown"></button>
+					</div>
+				</section>
+			</section>
 		</section>
 		
 		<!--Dice Rolls-->
@@ -527,7 +557,7 @@
 			<h2>Stats</h2>
 			
 			<!--Settlement Bar Graph-->
-			<table class="charts-css line multiple show-heading" id="my-chart">
+			<table class="charts-css line multiple show-heading show-primary-axis" id="my-chart">
 				<caption>Victory Points</caption>
 				<tbody id="settleGraph"></tbody>
 			 </table>
