@@ -452,6 +452,39 @@ img{
   text-shadow: 0.07em 0 black, 0 0.07em black, 0.07em 0 black, 0 -0.07em black;
 }
 
+/*Bonus*/
+#bonus{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#bonus div{
+  height: 200px;
+}
+
+#bonus img{
+  height: 50%;
+  width: 50%;
+}
+
+#bonus p{
+  background: rgba(0,0,0,.5);
+  padding: 3px;
+  width: 100%;
+}
+
+#monopolizer, #lucky7, #trader, #publicEnemy, #participation, #richer, #highRoller, #lowRider, #everything{
+  display: none;
+  flex-direction: column;
+  justify-content:space-between;
+  align-items: center;
+  width: 30%;
+  border-radius: 25px;
+}
+
 /*footer nav*/
 footer{
   position: fixed;
