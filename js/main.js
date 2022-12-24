@@ -250,6 +250,20 @@ class Board{
         this._selectColor = ""
     }
 
+    trackRobber(){
+        if(this._robberPlace != ""){
+            let i = +this._robberPlace.substr(4)        //Index of hex Robber is on
+            let colors = new Set()                      //Create set to hold unique colors
+            this._tiles[i]._settlements.forEach(s =>{   //Cycle through each settlement on hex
+                colors.add(s.split(",")[1])             //Add to the color set if not already in
+            })
+
+            Array.from(colors).forEach(c =>{            //Cycle through the set 
+                this._order[this._order.findIndex(p => p._color === c)]._robberTurns += 1   //Add one to _robberTurns for each player on hex
+            })
+        }
+    }
+
     //Select the Largest Army
     chooseArmy(color){
         let i = this._order.findIndex(player => player._color === color)//Finds index of player from the color
@@ -396,6 +410,7 @@ class Player{
         this._victoryPoints = 0
         this._tradeCount = 0
         this._robbed = 0
+        this._robberTurns = 0
         
         //0:Wood, 1:Brick, 2:Wool, 3:Wheat, 4:Ore
         //Resources Collected
@@ -494,6 +509,9 @@ class DiceTrack{
             if(game._turn % game._order.length === 0 || game._results._vpData.length === 0){
                 game._results.addSettlementData()
             }
+
+            //Track how long the robber is on players
+            game.trackRobber()
 
             //Give players cards according to the number rolled
             this.distributeCards(index + 2)
@@ -617,6 +635,7 @@ class Stats{
     constructor(){
         this._vpData = []       //Victory Points per round
         this._cardsData = []    //Resource Cards per roll
+        this._resourceImgs = ["images/wood.jpg", "images/brick.png","images/wool.png","images/wheat.png", "images/ore.png" ]
     }
 
     //Toggle visibility of Stats section
@@ -630,6 +649,24 @@ class Stats{
         this.updateStats()
         if(game._turn % game._order.length != 0) this.addSettlementData()   //Add final data if data wasn't just added by the roll 
         this.graphVictoryPoints()
+        
+        let rando = []
+        while(rando.length < 3){
+            let bonus = Math.floor(Math.random() * 8)
+            if(!rando.includes(bonus)) rando.push(bonus)
+        }
+        
+        rando.forEach(n =>{
+            if(n === 0) this.monopolizer()
+            else if(n === 1) this.lucky7()
+            else if(n === 2) this.publicEnemy()
+            else if(n === 3) this.trader()
+            else if(n === 4) this.participationTrophy()
+            else if(n === 5) this.highRoller()
+            else if(n === 6) this.lowRider()
+            else if(n === 7) this.everythingBagel()
+            else if(n === 8) this.richRicher()
+        })
     }
 
     addSettlementData(){
@@ -676,6 +713,290 @@ class Stats{
             //Fill in Robber
             document.querySelector(`#count${player._color}Robber`).innerText = player._robbed
         })
+    }
+
+    setBonusColor(color, bonus){
+        switch(color){
+            case "Blue":
+                document.querySelector(bonus).style.background = "radial-gradient(lightskyblue, #5b7cb0,#183d8c)"
+                document.querySelector(bonus).style.border =  "solid 10px #08214a"
+                break
+            case "Green":
+                document.querySelector(bonus).style.background = "radial-gradient(lightgreen, #418f3f, #095705)"
+                document.querySelector(bonus).style.border =  "solid 10px #022e01"
+                break
+            case "Red":
+                document.querySelector(bonus).style.background = "radial-gradient(#f28d91,#f55860,#70080d)"
+                document.querySelector(bonus).style.border =  "solid 10px #4d0206"
+                break
+            case "Orange":
+                document.querySelector(bonus).style.background = "radial-gradient(#fa9070,#fa693e,#8c2c08)"
+                document.querySelector(bonus).style.border =  "solid 10px #751c01"
+                break
+            case "White":
+                document.querySelector(bonus).style.background = "radial-gradient(white,#edebeb, #b8b9ba)"
+                document.querySelector(bonus).style.border =  "solid 10px gray"
+                break
+            case "Brown":
+                document.querySelector(bonus).style.background = "radial-gradient(tan,#947769,#3b190c)"
+                document.querySelector(bonus).style.border =  "solid 10px #26130a"
+                break
+        }
+    }
+
+    lucky7(){
+        let max = -1
+        let maxColor = ""
+        document.querySelector("#lucky7").style.display = "flex"
+
+        game._order.forEach(player =>{
+            if(player._playerRolls[5] > max){
+                max = player._playerRolls[5]
+                maxColor = player._color
+            }
+            else if(player._playerRolls[5] === max){
+                maxColor += "," + player._color
+            }
+        })
+
+        document.querySelector("#lucky7 span").innerText = max
+
+        maxColor = maxColor.split(",")
+        if(maxColor.length > 1){
+            this.setBonusColor(maxColor[Math.floor(Math.random() * maxColor.length)],"#lucky7")
+        }
+        else{        
+            this.setBonusColor(maxColor[0], "#lucky7")
+        }
+    }
+
+    trader(){
+        let max = -1
+        let maxColor = ""
+        document.querySelector("#trader").style.display = "flex"
+
+        game._order.forEach(player =>{
+            if(player._tradeCount > max){
+                max = player._tradeCount
+                maxColor = player._color
+            }
+            else if(player._tradeCount === max){
+                maxColor += "," + player._color
+            }
+        })
+
+        document.querySelector("#trader span").innerText = max
+
+        maxColor = maxColor.split(",")
+        if(maxColor.length > 1){
+            this.setBonusColor(maxColor[Math.floor(Math.random() * maxColor.length)],"#trader")
+        }
+        else{        
+            this.setBonusColor(maxColor[0], "#trader")
+        }
+    }
+
+    monopolizer(){
+        let totalResources = [0,0,0,0,0]//Total resources collected in game
+        let maxPercent = [[0,5]]        //[percent, resource]
+        let maxColor = ""               //Player(s) with highest percent
+        document.querySelector("#monopolizer").style.display = "flex"
+
+        game._order.forEach(player =>{          //Cycle through each player
+            player._cards.forEach((amount,i) =>{//Cycle through each resource
+                totalResources[i] += amount     //Add amount to the total
+            })
+        })
+
+        game._order.forEach(player =>{
+            player._cards.forEach((amount,i)=>{
+                if(amount/totalResources[i] > maxPercent[0][0]){
+                    maxColor = player._color
+                    maxPercent = [[amount/totalResources[i],i]]
+                }
+                else if(amount/totalResources[i] === maxPercent[0][0]){
+                    maxColor += "," + player._color
+                    maxPercent.push([amount/totalResources[i],i])
+                }
+            })
+        })
+
+        maxColor = maxColor.split(",")
+        if(maxColor.length > 1){
+            let i = Math.floor(Math.random() * maxColor.length)
+            this.setBonusColor(maxColor[i], "#monopolizer")
+            document.querySelector("#monopolizer span").innerText = Math.round(maxPercent[i][0] * 100)
+            document.querySelector("#monopolizer img").src = this._resourceImgs[maxPercent[i][1]]
+        }
+        else{        
+            this.setBonusColor(maxColor[0], "#monopolizer")
+            document.querySelector("#monopolizer span").innerText = Math.round(maxPercent[0][0] * 100)
+            document.querySelector("#monopolizer img").src = this._resourceImgs[maxPercent[0][1]]
+        }
+    }
+
+    publicEnemy(){
+        let max = -1
+        let maxColor = ""
+        document.querySelector("#publicEnemy").style.display = "flex"
+
+        game._order.forEach(player =>{
+            if(player._robberTurns > max){
+                max = player._robberTurns
+                maxColor = player._color
+            }
+            else if(player._robberTurns === max){
+                maxColor += "," + player._color
+            }
+        })
+
+        document.querySelector("#publicEnemy span").innerText = max
+
+        maxColor = maxColor.split(",")
+        if(maxColor.length > 1){
+            this.setBonusColor(maxColor[Math.floor(Math.random() * maxColor.length)],"#publicEnemy")
+        }
+        else{        
+            this.setBonusColor(maxColor[0], "#publicEnemy")
+        }
+    }
+
+    participationTrophy(){
+        let min = 999
+        let minColor = ""
+        document.querySelector("#participation").style.display = "flex"
+
+        game._order.forEach(player =>{
+            let total = player._cards.reduce((a,c)=>a+c,0)
+            if(total < min){
+                min = total
+                minColor = player._color
+            }
+            else if(total === min){
+                minColor += "," + player._color
+            }
+        })
+
+        document.querySelector("#participation span").innerText = min
+
+        minColor = minColor.split(",")
+        if(minColor.length > 1){
+            this.setBonusColor(minColor[Math.floor(Math.random() * minColor.length)],"#participation")
+        }
+        else{        
+            this.setBonusColor(minColor[0], "#participation")
+        }
+    }
+
+    richRicher(){
+        let max = 0
+        let maxColor = ""
+        document.querySelector("#richer").style.display = "flex"
+
+        game._order.forEach(player =>{
+            let total = player._cards.reduce((a,c)=>a+c,0)
+            if(total > max){
+                max = total
+                maxColor = player._color
+            }
+            else if(total === max){
+                maxColor += "," + player._color
+            }
+        })
+
+        document.querySelector("#richer span").innerText = max
+
+        maxColor = maxColor.split(",")
+        if(maxColor.length > 1){
+            this.setBonusColor(maxColor[Math.floor(Math.random() * maxColor.length)],"#richer")
+        }
+        else{        
+            this.setBonusColor(maxColor[0], "#richer")
+        }
+    }
+
+    highRoller(){
+        let max = 0
+        let maxColor = ""
+        document.querySelector("#highRoller").style.display = "flex"
+
+        game._order.forEach(player =>{
+            let total = player._playerRolls.reduce((a,c)=>a+c,0)
+            if(total > max){
+                max = total
+                maxColor = player._color
+            }
+            else if(total === max){
+                maxColor += "," + player._color
+            }
+        })
+
+        document.querySelector("#highRoller span").innerText = max
+
+        maxColor = maxColor.split(",")
+        if(maxColor.length > 1){
+            this.setBonusColor(maxColor[Math.floor(Math.random() * maxColor.length)],"#highRoller")
+        }
+        else{        
+            this.setBonusColor(maxColor[0], "#highRoller")
+        }
+    }
+
+    lowRider(){
+        let min = 999
+        let minColor = ""
+        document.querySelector("#lowRider").display = "flex"
+
+        game._order.forEach(player =>{
+            let total = player._playerRolls.reduce((a,c)=>a+c,0)
+            if(total < min){
+                min = total
+                minColor = player._color
+            }
+            else if(total === min){
+                minColor += "," + player._color
+            }
+        })
+
+        document.querySelector("#lowRider span").innerText = min
+
+        minColor = minColor.split(",")
+        if(minColor.length > 1){
+            this.setBonusColor(minColor[Math.floor(Math.random() * minColor.length)],"#lowRider")
+        }
+        else{        
+            this.setBonusColor(minColor[0], "#lowRider")
+        }
+    }
+
+    everythingBagel(){
+        let max = -1
+        let maxColor = ""
+        document.querySelector("#everything").display = "flex"
+
+        game._order.forEach(player =>{
+            let total = player._trades.reduce((a,c)=>{
+                if(c != 0) return a += 1
+                else return a += 0
+            },0)
+            if(total > max){
+                max = total
+                maxColor = player._color
+            }
+            else if(total === max){
+                maxColor += "," + player._color
+            }
+        })
+
+        document.querySelector("#everything span").innerText = max
+
+        maxColor = maxColor.split(",")
+        if(maxColor.length > 1){
+            this.setBonusColor(maxColor[Math.floor(Math.random() * maxColor.length)],"#everything")
+        }
+        else{        
+            this.setBonusColor(maxColor[0], "#everything")
+        }
     }
 }
 
